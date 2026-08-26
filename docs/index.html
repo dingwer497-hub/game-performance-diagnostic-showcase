@@ -69,11 +69,27 @@
     <div class="nav-group"><a class="nav-major" href="#requirements">需求说明</a></div>
     <div class="nav-group has-children"><a class="nav-major" href="#function-design">功能设计</a><div class="nav-sub"><a href="#demo">Demo 方案</a><a href="#scope">范围与规则</a><a href="#experience">交互流程</a></div></div>
     <div class="nav-group has-children"><a class="nav-major" href="#technical-design">技术方案设计</a><div class="nav-sub"><a href="#decision">技术选型</a><a href="#reuse">组件选择</a><a href="#architecture">链路与代码</a><a href="#metrics">采集口径</a><a href="#data">数据设计</a></div></div>
-    <div class="nav-group has-children"><a class="nav-major" href="#acceptance-debug">验收与调试</a><div class="nav-sub"><a href="#stability">稳定性</a><a href="#tests">验收用例</a><a href="#debug-records">调试记录</a></div></div>
+    <div class="nav-group"><a class="nav-major" href="#debug-records">问题修改记录</a></div>
+    <div class="nav-group has-children"><a class="nav-major" href="#acceptance-debug">验收与调试</a><div class="nav-sub"><a href="#stability">稳定性</a><a href="#tests">验收用例</a></div></div>
     <div class="nav-group"><a class="nav-major" href="#sources">参考资料</a></div>
   </div></nav>
 
   <main class="wrap">
+    <section class="panel" id="debug-records">
+      <div class="section-head"><div class="no">记录</div><div><h2>问题修改记录</h2><p class="lead">记录 Demo 实际体验中发现的问题、原因、解决方案与验证状态。</p></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>问题现象</th><th>原因定位</th><th>解决方案</th><th>验证状态</th></tr></thead>
+        <tbody>
+          <tr><td><strong>问题 1｜时间选择难以理解</strong></td><td>滑块操作不直观；仅显示秒数，不符合用户回忆时间的表达习惯。</td><td>分别填写问题开始和结束于“几分几秒前”，统一显示为“X 分 XX 秒”；数字框支持鼠标滚轮调整。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 2｜填写反馈时仍会操控游戏</strong></td><td>游戏继续持有鼠标捕获和输入焦点，填写反馈时会同时带动游戏视角。</td><td>打开反馈窗口时解除鼠标捕获与光标限制，将焦点转移至反馈窗口；关闭后恢复游戏焦点。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 3｜报告出现异常帧时间和失真的平均 FPS</strong></td><td>切换后台或焦点变化产生异常长帧和高 Present FPS 样本，污染正常游玩数据。</td><td>新会话记录游戏前台状态；确认处于后台的时间不进入摘要和主曲线，但继续保留在原始数据中；FPS 与帧时间分开呈现。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 4｜游戏操作时容易误点浮窗</strong></td><td>浮窗是独立置顶窗口，Windows 会优先将命中区域内的点击交给浮窗。</td><td>仅在游戏处于前台且隐藏鼠标进行视角操控时启用点击穿透；鼠标显示、游戏失焦或反馈窗口打开时恢复正常交互。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 5｜游戏启动初期 process_gpu 偶尔显示 UNAVAILABLE</strong></td><td>游戏进程创建后约 1～2 秒内，Windows 尚未注册对应 GPU Engine 实例；PDH_NO_DATA 被误判为永久故障。</td><td>将该状态视为暂时未就绪，每 2 秒重新建立查询；取得有效样本后自动恢复为 OK，等待期间保留具体原因。</td><td><span class="state degraded">已完成，未充分验证</span></td></tr>
+        </tbody>
+      </table></div>
+      <details class="term-notes"><summary>问题3报告记录</summary><div class="term-list"><a class="demo-report-link" style="margin-top:0" href="attachments/demo-problem-3-before-report/feedback.html" target="_blank" rel="noopener">修复前｜02 Bad Case：出现异常帧</a><a class="demo-report-link" style="margin-top:0" href="attachments/demo-problem-3-after-report/feedback.html" target="_blank" rel="noopener">修复后｜03 解决异常帧</a></div></details>
+    </section>
+
     <section class="panel" id="requirements">
       <div class="section-head"><div class="no">01</div><div><h2>需求说明</h2><p class="lead">说明问题定位过程中缺少什么证据、该能力如何提效，以及 Demo 能够验证到什么程度。</p></div></div>
       <div class="grid-3">
@@ -294,20 +310,6 @@
         </tbody>
       </table></div>
       <div class="checks" style="margin-top:14px"><div class="check">至少一份《黑神话：悟空》真实 30 分钟会话可被查看。</div><div class="check">快捷键、时间选择、证据截取和 QA / 研发接收页端到端可演示。</div><div class="check">真实性能与真实日志来源清晰；固定反馈字段不进入采集数据。</div><div class="check">缺失 GPU 或日志时页面仍可用、原因清楚且不伪造。</div></div>
-      </div>
-      <div class="subsection" id="debug-records">
-        <div class="subsection-head"><h3>实机调试与问题修复记录</h3><p>记录目标 Windows 电脑和实际游戏环境中的问题、原因、方案与状态。</p></div>
-      <div class="table-wrap"><table>
-        <thead><tr><th>问题现象</th><th>原因定位</th><th>解决方案</th><th>验证状态</th></tr></thead>
-        <tbody>
-          <tr><td><strong>问题 1｜时间选择难以理解</strong></td><td>滑块操作不直观；仅显示秒数，不符合用户回忆时间的表达习惯。</td><td>分别填写问题开始和结束于“几分几秒前”，统一显示为“X 分 XX 秒”；数字框支持鼠标滚轮调整。</td><td><span class="state ok">已完成</span></td></tr>
-          <tr><td><strong>问题 2｜填写反馈时仍会操控游戏</strong></td><td>游戏继续持有鼠标捕获和输入焦点，填写反馈时会同时带动游戏视角。</td><td>打开反馈窗口时解除鼠标捕获与光标限制，将焦点转移至反馈窗口；关闭后恢复游戏焦点。</td><td><span class="state ok">已完成</span></td></tr>
-          <tr><td><strong>问题 3｜报告出现异常帧时间和失真的平均 FPS</strong></td><td>切换后台或焦点变化产生异常长帧和高 Present FPS 样本，污染正常游玩数据。</td><td>新会话记录游戏前台状态；确认处于后台的时间不进入摘要和主曲线，但继续保留在原始数据中；FPS 与帧时间分开呈现。</td><td><span class="state ok">已完成</span></td></tr>
-          <tr><td><strong>问题 4｜游戏操作时容易误点浮窗</strong></td><td>浮窗是独立置顶窗口，Windows 会优先将命中区域内的点击交给浮窗。</td><td>仅在游戏处于前台且隐藏鼠标进行视角操控时启用点击穿透；鼠标显示、游戏失焦或反馈窗口打开时恢复正常交互。</td><td><span class="state ok">已完成</span></td></tr>
-          <tr><td><strong>问题 5｜游戏启动初期 process_gpu 偶尔显示 UNAVAILABLE</strong></td><td>游戏进程创建后约 1～2 秒内，Windows 尚未注册对应 GPU Engine 实例；PDH_NO_DATA 被误判为永久故障。</td><td>将该状态视为暂时未就绪，每 2 秒重新建立查询；取得有效样本后自动恢复为 OK，等待期间保留具体原因。</td><td><span class="state degraded">已完成，未充分验证</span></td></tr>
-        </tbody>
-      </table></div>
-      <details class="term-notes"><summary>问题3报告记录</summary><div class="term-list"><a class="demo-report-link" style="margin-top:0" href="attachments/demo-problem-3-before-report/feedback.html" target="_blank" rel="noopener">修复前｜02 Bad Case：出现异常帧</a><a class="demo-report-link" style="margin-top:0" href="attachments/demo-problem-3-after-report/feedback.html" target="_blank" rel="noopener">修复后｜03 解决异常帧</a></div></details>
       </div>
     </section>
 
