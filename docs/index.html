@@ -1,104 +1,455 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
+<html lang="zh-CN"><head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="游戏性能与日志追溯 Demo：Windows 便携版、产品文档、技术设计、诊断报告示例与完整源码。">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="游戏性能与日志追溯 Demo：Windows 便携版、完整设计稿、缺陷反馈系统 PRD、真实诊断报告与源代码。">
   <title>游戏性能与日志追溯 Demo｜项目展示</title>
   <style>
-    :root{--bg:#080706;--paper:#151310;--paper2:#1c1814;--ink:#e4ddd2;--muted:#aaa197;--line:#443a2e;--gold:#c6a665;--red:#a94a3e;--green:#8da187;--shadow:0 22px 70px rgba(0,0,0,.42);--serif:KaiTi,STKaiti,"Songti SC",serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
-    *{box-sizing:border-box}html{scroll-behavior:smooth;background:#050505}body{margin:0;color:var(--ink);font-family:var(--sans);line-height:1.72;background:radial-gradient(circle at 14% 4%,#2a2118 0,transparent 30%),radial-gradient(circle at 86% 12%,#1c1712 0,transparent 26%),linear-gradient(180deg,#0b0908,#050505 74%)}a{color:inherit}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}
-    header{position:relative;isolation:isolate;overflow:hidden;min-height:620px;display:grid;align-items:end;border-bottom:1px solid #5a4934;background:linear-gradient(90deg,rgba(5,5,5,.96),rgba(7,6,5,.76) 52%,rgba(5,5,5,.86)),url("assets/images/zhongkui-title-bg.jpg") center 52%/cover no-repeat}header::after{content:"";position:absolute;z-index:-1;inset:auto 0 0;height:3px;background:linear-gradient(90deg,transparent,var(--red),var(--gold),var(--red),transparent)}.hero{padding:88px 0 74px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase}.hero h1{max-width:950px;margin:14px 0 18px;font:600 clamp(46px,7vw,82px)/1.08 var(--serif);letter-spacing:.04em;text-shadow:0 4px 28px #000}.hero p{max-width:760px;margin:0;color:#c2bbb1;font-size:clamp(16px,2vw,20px)}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px;border:1px solid #725d3e;background:#17130f;color:#e6d9c3;font-weight:700;text-decoration:none}.button.primary{border-color:#a7844d;background:#4a3520}.button:hover{transform:translateY(-1px);border-color:var(--gold);background:#2c2117}.note{margin-top:14px;color:#918a81;font-size:12px}
-    nav{position:sticky;top:0;z-index:20;border-bottom:1px solid #362e26;background:rgba(7,6,5,.92);backdrop-filter:blur(14px)}nav .wrap{display:flex;gap:5px;overflow:auto;padding:8px 0}nav a{padding:7px 11px;color:#b9aa96;font-size:12px;text-decoration:none;white-space:nowrap}nav a:hover{background:#241d16;color:#e0cda9}
-    main{padding:54px 0 80px}section{scroll-margin-top:70px;margin-bottom:24px;padding:30px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(27,24,21,.98),rgba(15,14,13,.98));box-shadow:var(--shadow)}.section-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}.num{display:grid;place-items:center;width:44px;height:44px;border:1px solid #755f3f;color:var(--gold);font-size:12px}.section-head h2{margin:0;font:600 28px/1.2 var(--serif);letter-spacing:.05em}.section-head p{margin:3px 0 0;color:#958e85;font-size:13px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{padding:20px;border:1px solid #3f3831;background:linear-gradient(150deg,#211d19,#12110f)}.card h3{margin:0 0 8px;color:#dccfbc;font:600 18px var(--serif)}.card p,.card li{color:var(--muted);font-size:13px}.card ul{margin:8px 0 0;padding-left:18px}.tag{display:inline-block;margin-bottom:12px;padding:3px 8px;border:1px solid #785f3b;color:#c9a665;font-size:10px;font-weight:800}.card-link{display:block;height:100%;text-decoration:none}.card-link:hover{border-color:#92764a;background:linear-gradient(150deg,#2a2119,#17130f)}
-    .flow{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:10px;overflow:auto}.step{padding:16px;border:1px solid #40382f;border-top:3px solid #987b4d;background:#12100e}.step b{display:block;margin:5px 0;color:#d5c9b7;font:600 15px var(--serif)}.step small{color:var(--gold);font-size:10px}.step p{margin:0;color:#9f978d;font-size:11px}.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.shot{margin:0;border:1px solid #40382f;background:#0d0c0b}.shot img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.shot figcaption{padding:10px 12px;color:#c9bba6;font:600 13px var(--serif)}
-    .architecture{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.arch{padding:18px;border:1px solid #413930;background:#12110f}.arch strong{display:block;color:#d4c5b0;font:600 16px var(--serif)}.arch span{display:block;margin-top:7px;color:#999187;font-size:12px}.privacy{border-left:4px solid var(--green);background:linear-gradient(90deg,#182018,#131511)}footer{padding:28px 0 50px;border-top:1px solid #302a24;color:#7f786f;font-size:11px}
-    @media(max-width:900px){header{min-height:540px}.grid,.gallery{grid-template-columns:1fr}.architecture{grid-template-columns:1fr 1fr}}@media(max-width:560px){.wrap{width:min(100% - 22px,1180px)}section{padding:20px}.architecture{grid-template-columns:1fr}.hero{padding:68px 0 56px}.hero h1{font-size:44px}}
+    :root{
+      --ink:#ddd7cc;--muted:#a8a39b;--line:#403a33;--paper:#171513;--canvas:#090807;
+      --gold:#b39255;--gold2:#d0b273;--red:#a83d32;--green:#84947c;--violet:#9b8771;
+      --soft-red:#2d1b18;--soft-green:#192019;--soft-gold:#292218;--shadow:0 18px 50px rgba(0,0,0,.28);
+      --display:KaiTi,STKaiti,"LXGW WenKai","Songti SC",serif;
+      --body:Garamond,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth;background:#050505}body{margin:0;color:var(--ink);font-family:var(--body);line-height:1.72;background:radial-gradient(circle at 16% 4%,#211d18 0,transparent 29%),radial-gradient(circle at 86% 16%,#1a1714 0,transparent 26%),linear-gradient(180deg,#0b0a09,#070606 72%,#030303)}
+    a{color:inherit}.wrap{width:min(1240px,calc(100% - 40px));margin:0 auto}
+    header{position:relative;overflow:hidden;padding:70px 0 56px;border-bottom:3px solid transparent;background:linear-gradient(90deg,rgba(5,5,5,.95) 0%,rgba(8,7,6,.82) 45%,rgba(7,6,5,.9) 100%),radial-gradient(ellipse at 82% 16%,rgba(165,143,94,.16),transparent 31%),url("assets/images/zhongkui-title-bg.jpg") center 54%/cover no-repeat,#080706}
+    header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,transparent 3%,var(--red) 18%,#a58f5e 51%,var(--red) 82%,transparent 97%);opacity:.72}
+    .hero{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}.hero>div,h1{width:100%}h1{margin:0;color:#e5dfd5;font-family:var(--display);font-size:clamp(40px,5vw,66px);font-weight:500;line-height:1.08;letter-spacing:.045em}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.meta span{padding:5px 10px;border:1px solid #554b3b;background:rgba(0,0,0,.24);color:#c8c0b3;font-size:11px}
+    .decision{padding:22px;border:1px solid #4b4337;border-left:3px solid var(--red);background:linear-gradient(135deg,rgba(40,35,29,.82),rgba(12,11,10,.9));box-shadow:inset 0 0 26px rgba(0,0,0,.3)}.decision small{display:block;color:#a58f5e;font-family:var(--display);font-size:13px;font-weight:700}.decision strong{display:block;margin-top:8px;color:#e0d8ca;font-family:var(--display);font-size:20px;font-weight:500;line-height:1.5}.decision p{margin:10px 0 0;color:#aaa49a;font-size:12px}
+    nav{position:sticky;top:0;z-index:20;border-bottom:1px solid #3e352a;background:rgba(8,7,7,.95);backdrop-filter:blur(14px)}nav .wrap{display:flex;align-items:stretch;gap:7px;overflow-x:auto;padding:8px 0;scrollbar-width:none}.nav-index{flex:0 0 auto;display:flex;align-items:center;padding:0 15px 0 2px;color:#d2c6b3;font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:.12em;white-space:nowrap}.nav-group{flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;border:1px solid transparent}.nav-group.has-children{border-color:#302a24;background:#0f0d0c}.nav-major{display:block;padding:5px 10px;color:#c0b29d;font-family:var(--display);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}.nav-sub{display:flex;gap:2px;padding:0 5px 5px}.nav-sub a{display:block;padding:3px 6px;color:#817a70;font-size:10.5px;text-decoration:none;white-space:nowrap;border-left:1px solid #4b4030}.nav-group a:hover{background:#2a2119;color:#c7a76a}
+    main{padding:38px 0 74px}.panel{position:relative;margin-bottom:24px;padding:30px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(27,24,21,.98),rgba(18,16,15,.98));box-shadow:var(--shadow)}.panel::before{content:"";position:absolute;left:18px;right:18px;top:0;height:1px;background:linear-gradient(90deg,transparent,#766447,transparent);opacity:.55}.section-head{display:grid;grid-template-columns:48px 1fr;gap:15px;align-items:start;margin-bottom:21px}.no{display:grid;place-items:center;width:44px;height:44px;border:1px solid #705d3e;background:#0c0b0a;color:#bba06d;font-size:13px;font-weight:700}h2,h3,h4{font-family:var(--display);font-weight:600}h2{margin:0;color:#ded5c6;font-size:29px;line-height:1.25;letter-spacing:.055em}h3{margin:0 0 8px;color:#d4cabb;font-size:18px}h4{margin:0 0 6px;color:#c8baa6;font-size:15px}.lead{margin:5px 0 0;color:#918b82;font-size:13px}p{margin:0}
+    .grid-2,.grid-3,.grid-4{display:grid;gap:13px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{padding:18px;border:1px solid #3c3731;background:linear-gradient(155deg,#211e1b,#151311)}.card p,.card li{color:#aaa49c;font-size:12.5px}.card ul,.card ol{margin:8px 0 0;padding-left:18px}.card li+li{margin-top:4px}.tag{display:inline-block;margin-bottom:10px;padding:3px 8px;border:1px solid currentColor;color:#a58f5e;font-size:10px;font-weight:800;letter-spacing:.04em}.tag.red{color:#b44b40}.tag.green{color:#839a7e}.tag.violet{color:#a99681}
+    .callout{margin-top:14px;padding:15px 17px;border:1px solid #4b4030;border-left:4px solid #a58f5e;background:linear-gradient(90deg,#292218,#1a1713);color:#bbb0a0;font-size:12.5px}.callout strong{color:#c7a76a}.callout.warn{border-color:#674039;border-left-color:var(--red);background:linear-gradient(90deg,#2d1b18,#1a1513)}.callout.good{border-color:#465442;border-left-color:var(--green);background:linear-gradient(90deg,#192019,#151813)}
+    .table-wrap{overflow-x:auto;border:1px solid #403a33;background:#11100f}table{width:100%;min-width:940px;border-collapse:collapse;font-size:11.5px}th{padding:11px;text-align:left;color:#c3b6a4;background:#26211c;white-space:nowrap;font-family:var(--display);font-size:12.5px}td{padding:10px 11px;border-top:1px solid #39342f;vertical-align:top;color:#a9a39a}td strong{color:#ddd4c6}tbody tr:hover td{background:#211d18}.yes{color:#93a88d;font-weight:800}.optional{color:#c3a66c;font-weight:800}.nope{color:#ba5045;font-weight:800}code{color:#c7a76a}
+    .arch{display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr 44px 1fr;gap:8px;align-items:stretch}.arch-box{padding:17px;border:1px solid #403a33;background:#181614}.arch-box h3{font-size:16px}.arch-box ul{margin:8px 0 0;padding-left:18px;color:#a49e95;font-size:12px}.arch-box.collect{border-top:3px solid var(--red)}.arch-box.normalize{border-top:3px solid var(--gold)}.arch-box.store{border-top:3px solid var(--green)}.arch-box.view{border-top:3px solid var(--violet)}.arrow{display:grid;place-items:center;color:#846f4b;font-size:23px;font-weight:900}
+    .flow{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:12px;overflow-x:auto;padding-bottom:7px}.step{min-width:150px;padding:15px;border:1px solid #4a4034;border-top:3px solid #9f8657;background:#171513}.step small{color:#aa8f5b;font-size:10px;font-weight:800;letter-spacing:.08em}.step b{display:block;margin:6px 0;color:#d5ccbd;font-family:var(--display);font-size:14px}.step p{color:#9d978e;font-size:11px}
+    .demo-gallery{display:grid;grid-template-columns:repeat(3,minmax(240px,1fr));gap:12px;margin-top:18px;overflow-x:auto;padding-bottom:7px}.demo-shot{margin:0;min-width:240px;border:1px solid #403a33;background:#11100f}.demo-shot button{display:block;width:100%;padding:0;border:0;background:#090807;cursor:zoom-in}.demo-shot img{display:block;width:100%;height:180px;object-fit:cover}.demo-shot figcaption{padding:10px 12px;color:#c9bda9;font-family:var(--display);font-size:13px}.demo-report-link{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:12px 15px;border:1px solid #705d3e;background:linear-gradient(90deg,#292218,#171411);color:#d4c2a2;font-family:var(--display);font-size:14px;text-decoration:none}.demo-report-link::after{content:"查看接收页面 →";color:#a58f5e;font-family:var(--body);font-size:11px}.demo-report-link:hover{border-color:#b39255;background:linear-gradient(90deg,#34281c,#1b1713)}.image-lightbox{max-width:none;max-height:none;padding:0;border:1px solid #665438;background:#090807;box-shadow:0 24px 80px rgba(0,0,0,.72)}.image-lightbox::backdrop{background:rgba(0,0,0,.86)}.image-lightbox img{display:block;max-width:92vw;max-height:88vh;object-fit:contain}.image-lightbox button{position:absolute;right:10px;top:10px;width:34px;height:34px;border:1px solid #7a684a;background:rgba(8,7,6,.9);color:#e0d8ca;font-size:20px;cursor:pointer}
+    .subsection{padding-top:4px}.subsection+.subsection{margin-top:28px;padding-top:28px;border-top:1px solid #403a33}.subsection-head{margin-bottom:15px}.subsection-head h3{margin:0;color:#d8cebf;font-size:22px}.subsection-head p{margin:3px 0 0;color:#918b82;font-size:12.5px}.design-fold{margin-top:28px;border:1px solid #4a4034;background:#12100f}.design-fold summary{padding:14px 17px;color:#d0b273;font-family:var(--display);font-size:18px;font-weight:700;cursor:pointer;list-style:none}.design-fold summary::before{content:"＋";display:inline-block;width:24px;color:#8f7650}.design-fold[open] summary::before{content:"－"}.fold-body{padding:4px 17px 17px}
+    .term-notes{margin-top:14px;border:1px solid #403a33;background:#12100f}.term-notes summary{padding:11px 14px;color:#bba06d;font-family:var(--display);font-size:13px;font-weight:700;cursor:pointer;list-style:none}.term-notes summary::before{content:"＋";display:inline-block;width:20px;color:#8f7650}.term-notes[open] summary::before{content:"－"}.term-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 14px 14px}.term-list p{padding:10px 12px;border:1px solid #38332e;background:#181512;color:#a9a198;font-size:11.5px}.term-list strong{color:#d0b273}
+    .code{margin:14px 0 0;padding:14px 16px;overflow-x:auto;border:1px solid #38332e;background:#090807;color:#bcae98;font:11.5px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}.runtime-chain{margin-top:14px;padding:18px;border:1px solid #40382e;background:linear-gradient(145deg,#16130f,#0b0a09);text-align:center}.runtime-chain span{display:block;color:#c9c0b3;font-size:12.5px;line-height:1.55}.runtime-chain i{display:block;padding:2px 0;color:#a58f5e;font-style:normal}.state{display:inline-block;padding:2px 7px;border:1px solid #554b3b;font-size:10px;font-weight:800}.state.ok{border-color:#5f745b;color:#9daf98}.state.missing{border-color:#833d35;color:#cf7168}.state.degraded{border-color:#8b6b3f;color:#c19b5d}
+    .checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check{padding:11px 13px;border:1px solid #38342f;background:#171513;color:#a9a39a;font-size:11.5px}.check::before{content:"✓";margin-right:8px;color:#93a88d;font-weight:900}.sources{padding-left:19px;color:#aaa49c;font-size:12px}.sources li+li{margin-top:7px}.sources a{color:#c7a76a}
+    .editor-bar{position:fixed;right:18px;bottom:18px;z-index:80;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;max-width:min(720px,calc(100% - 36px));padding:10px;border:1px solid #5b4b35;background:rgba(9,8,7,.96);box-shadow:0 14px 38px rgba(0,0,0,.48);backdrop-filter:blur(12px)}.editor-bar button{padding:8px 12px;border:1px solid #665438;background:#211b14;color:#d6c5a7;font:600 12px var(--body);cursor:pointer}.editor-bar button:hover{border-color:#b39255;background:#30251a}.editor-bar button.primary{border-color:#8d7041;background:#3a2b1b;color:#ead8b8}.editor-bar button:disabled{cursor:not-allowed;opacity:.48}.editor-status{align-self:center;min-width:180px;color:#968d81;font-size:11px}.editor-status.ok{color:#93a88d}.editor-status.warn{color:#d0a45f}.editor-status.error{color:#cf7168}.editing [contenteditable="true"]{outline:1px dashed rgba(208,178,115,.55);outline-offset:3px;cursor:text}.editing [contenteditable="true"]:focus{outline:2px solid #b39255;background:rgba(179,146,85,.08)}
+    footer{padding:26px 0 60px;border-top:1px solid #332d27;background:#050505;color:#77736e;font-size:10.5px}
+    header.showcase-header{isolation:isolate;min-height:620px;display:grid;align-items:end;padding:0;border-bottom:1px solid #5a4934;background:linear-gradient(90deg,rgba(5,5,5,.96),rgba(7,6,5,.76) 52%,rgba(5,5,5,.86)),url("assets/images/zhongkui-title-bg.jpg") center 52%/cover no-repeat}
+    header.showcase-header::after{z-index:-1;opacity:1;background:linear-gradient(90deg,transparent,var(--red),var(--gold),var(--red),transparent)}
+    .showcase-hero{width:min(1180px,calc(100% - 36px));margin:auto;padding:88px 0 74px}.showcase-eyebrow{color:#c6a665;font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase}.showcase-hero h1{max-width:950px;margin:14px 0 18px;font:600 clamp(46px,7vw,82px)/1.08 var(--display);letter-spacing:.04em;text-shadow:0 4px 28px #000}.showcase-hero .hero-copy{max-width:760px;margin:0;color:#c2bbb1;font-size:clamp(16px,2vw,20px)}
+    .showcase-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.showcase-button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px;border:1px solid #725d3e;background:#17130f;color:#e6d9c3;font-weight:700;text-decoration:none}.showcase-button.primary{border-color:#a7844d;background:#4a3520}.showcase-button:hover{transform:translateY(-1px);border-color:#c6a665;background:#2c2117}.showcase-note{margin-top:14px;color:#918a81;font-size:12px}.prd-link{display:inline-flex;margin-top:13px;padding:7px 10px;border:1px solid #7c5e39;color:#d0b273;font-size:11.5px;font-weight:700;text-decoration:none}.prd-link:hover{border-color:#b39255;background:#292218;color:#ead8b8}
+    @media(max-width:1000px){.hero{grid-template-columns:1fr}.arch{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){.wrap{width:min(100% - 22px,1240px)}header{padding:48px 0 40px}.panel{padding:20px}.section-head{grid-template-columns:1fr}.grid-2,.grid-3,.grid-4,.term-list,.checks{grid-template-columns:1fr}.editor-bar{left:11px;right:11px;bottom:11px;max-width:none;justify-content:flex-start}.editor-status{order:3;width:100%}header.showcase-header{min-height:540px;padding:0}.showcase-hero{width:min(100% - 22px,1180px);padding:68px 0 56px}.showcase-hero h1{font-size:44px}}
+    @media print{body{background:#fff;color:#222;font-size:11px}nav,.editor-bar{display:none!important}header{background:#171411!important}.panel,.card,.arch-box,.step,.check,.term-notes,.term-list p{background:#fff!important;border-color:#aaa;box-shadow:none}h2,h3,h4,p,li,td,td strong,.card p,.card li{color:#222!important}th{background:#eee!important;color:#222}.wrap{width:100%}}
   </style>
 </head>
-<body>
-  <header>
-    <div class="wrap hero">
-      <div class="eyebrow">Windows Game QA · Product & Engineering Demo</div>
+<body class="">
+  <div class="editor-bar" role="toolbar" aria-label="文档文字编辑工具">
+    <button type="button" id="toggle-edit" class="primary">编辑文字</button>
+    <button type="button" id="save-file" disabled="">保存到当前 HTML</button>
+    <button type="button" id="download-file" disabled="">下载修改版</button>
+    <span id="editor-status" class="editor-status" aria-live="polite">当前为只读模式</span>
+  </div>
+  <header class="showcase-header">
+    <div class="showcase-hero">
+      <div class="showcase-eyebrow">Windows Game QA · Product &amp; Engineering Demo</div>
       <h1>游戏性能与日志追溯 Demo</h1>
-      <p>试玩者只需回忆并选择问题发生的大致时间段，工具便自动截取对应性能数据和游戏日志，为 QA 与研发保留可追溯的缺陷现场。</p>
-      <div class="actions">
-        <a class="button primary" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase/releases/latest/download/game-diagnostic-demo-windows-x64.zip">下载 Windows 便携版</a>
-        <a class="button" href="#documents">阅读设计文档</a>
-        <a class="button" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase">查看完整源码</a>
+      <p class="hero-copy">试玩者只需回忆并选择问题发生的大致时间段，工具便自动截取对应性能数据和游戏日志，为 QA 与研发保留可追溯的缺陷现场。</p>
+      <div class="showcase-actions">
+        <a class="showcase-button primary" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase/releases/latest/download/game-diagnostic-demo-windows-x64.zip">下载 Windows 便携版</a>
+        <a class="showcase-button" href="#requirements">阅读设计文档</a>
+        <a class="showcase-button" href="defect-feedback-system-prd.html">项目模拟背景 | 缺陷反馈系统（PRD）</a>
+        <a class="showcase-button" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase">查看完整源码</a>
       </div>
-      <div class="note">Windows 10/11 x64 · 完整解压后运行 · 无需预装 Python · 未签名程序可能触发 SmartScreen 提示</div>
+      <div class="showcase-note">Windows 10/11 x64 · 完整解压后运行 · 无需预装 Python · 未签名程序可能触发 SmartScreen 提示</div>
     </div>
   </header>
 
-  <nav><div class="wrap"><a href="#overview">项目概览</a><a href="#flow">演示闭环</a><a href="#documents">设计文档</a><a href="#screens">实机截图</a><a href="#reports">报告示例</a><a href="#engineering">工程实现</a></div></nav>
+  <nav aria-label="文档目录"><div class="wrap">
+    <div class="nav-index">索引</div>
+    <div class="nav-group"><a class="nav-major" href="#requirements">需求说明</a></div>
+    <div class="nav-group has-children"><a class="nav-major" href="#function-design">功能设计</a><div class="nav-sub"><a href="#demo">Demo 方案</a><a href="#scope">范围与规则</a><a href="#experience">交互流程</a></div></div>
+    <div class="nav-group has-children"><a class="nav-major" href="#technical-design">技术方案设计</a><div class="nav-sub"><a href="#decision">技术选型</a><a href="#reuse">组件选择</a><a href="#architecture">链路与代码</a><a href="#metrics">采集口径</a><a href="#data">数据设计</a></div></div>
+    <div class="nav-group has-children"><a class="nav-major" href="#acceptance-debug">验收与调试</a><div class="nav-sub"><a href="#stability">稳定性</a><a href="#tests">验收用例</a><a href="#debug-records">调试记录</a></div></div>
+    <div class="nav-group"><a class="nav-major" href="#sources">参考资料</a></div>
+  </div></nav>
 
   <main class="wrap">
-    <section id="overview">
-      <div class="section-head"><div class="num">01</div><div><h2>项目概览</h2><p>从需求定义、真实采集到可分发 Windows Demo 的完整实现。</p></div></div>
-      <div class="grid">
-        <article class="card"><span class="tag">问题</span><h3>缺陷现场容易丢失</h3><p>试玩者往往只能回忆 Bug 发生的大致时间，研发收到反馈后需要从完整日志和长时间性能记录中反复查找。</p></article>
-        <article class="card"><span class="tag">方案</span><h3>时间段驱动证据截取</h3><p>工具持续滚动采集最近 30 分钟；提交时只选择开始与结束时间，自动生成对应性能、日志和来源状态。</p></article>
-        <article class="card"><span class="tag">结果</span><h3>QA 与研发直接查看</h3><p>离线报告同时提供反馈信息、性能曲线、日志事件、原始证据与数据完整性说明，减少往返补问。</p></article>
+    <section class="panel" id="requirements">
+      <div class="section-head"><div class="no">01</div><div><h2>需求说明</h2><p class="lead">说明问题定位过程中缺少什么证据、该能力如何提效，以及 Demo 能够验证到什么程度。</p></div></div>
+      <div class="grid-3">
+        <article class="card"><span class="tag red">业务背景</span><h3>已有缺陷反馈系统 MVP 设想</h3><p>试玩者在游戏中提交缺陷，缺陷反馈系统负责收集现场信息并交给 QA 与研发。本 Demo 不重做该系统，只验证其中“按问题发生时间补充性能与日志证据”的能力。</p><a class="prd-link" href="defect-feedback-system-prd.html">查看《缺陷反馈系统 1.0 PRD》 →</a></article>
+        <article class="card"><span class="tag">产品痛点</span><h3>问题描述与现场证据脱节</h3><p>试玩者通常只能描述现象并回忆 Bug 发生在几分钟前；研发收到反馈后，仍要向 QA 补问时间和环境、尝试复现，并从长时间日志中手工寻找线索，首次反馈难以直接用于排查。</p></article>
+        <article class="card"><span class="tag green">产品目标</span><h3>让时间回忆成为证据入口</h3><p>用户只填写问题发生的大致时间段，系统从最近 30 分钟的持续记录中截取对应区间及前后上下文，自动对齐性能指标、游戏日志、采集状态和基础环境信息。</p></article>
+      </div>
+      <div class="callout good"><strong>核心需求：</strong>当试玩者只能回忆问题发生的大致时间时，仍能在不侵入游戏进程的前提下，为 QA 与研发提供该时段可追溯、来源明确的真实性能数据和游戏日志。</div>
+      <div class="grid-2" style="margin-top:14px">
+        <article class="card"><h3>需求价值</h3><ul><li><strong>减少沟通：</strong>首次反馈同时携带时间、环境、性能与日志证据，降低 QA 和研发往返补问。</li><li><strong>减少查找：</strong>自动截取问题区间及上下文，避免研发从完整日志和长时间记录中手工搜索。</li><li><strong>缩小范围：</strong>性能曲线与日志按同一时间轴对齐，帮助研发优先判断渲染、CPU、内存、资源加载或程序报错等排查方向。</li><li><strong>保留现场：</strong>为低频、难复现问题留下首次发生时的证据，降低现场完全丢失的概率。</li></ul></article>
+        <article class="card"><h3>成功结果</h3><ul><li>用户仅选择时间段即可生成可查看、可导出的证据包。</li><li>研发看到的证据与用户选择的时间段严格对应，并包含前后上下文。</li><li>数据不可用时明确显示原因，禁止以示例数据冒充真实采集结果。</li><li>工具异常不影响《黑神话：悟空》继续运行。</li></ul></article>
       </div>
     </section>
 
-    <section id="flow">
-      <div class="section-head"><div class="num">02</div><div><h2>端到端演示闭环</h2><p>不建设完整企业缺陷平台，集中验证最有价值的现场证据链路。</p></div></div>
+    <section class="panel" id="function-design">
+      <div class="section-head"><div class="no">02</div><div><h2>功能设计</h2><p class="lead">说明 Demo 主流程、功能边界、回溯规则和交互方式。</p></div></div>
+      <div class="subsection" id="demo">
+        <div class="subsection-head"><h3>Demo 方案</h3><p>用本地端到端演示验证核心价值，不建设完整企业缺陷平台。</p></div>
       <div class="flow">
-        <article class="step"><small>STEP 01</small><b>启动工具</b><p>完成环境与权限检查。</p></article>
-        <article class="step"><small>STEP 02</small><b>识别游戏</b><p>绑定目标渲染进程。</p></article>
-        <article class="step"><small>STEP 03</small><b>持续采集</b><p>记录性能与可读日志。</p></article>
-        <article class="step"><small>STEP 04</small><b>快捷键反馈</b><p>填写问题发生时间段。</p></article>
-        <article class="step"><small>STEP 05</small><b>生成证据</b><p>截取区间及上下文。</p></article>
-        <article class="step"><small>STEP 06</small><b>诊断查看</b><p>QA 与研发离线浏览。</p></article>
+        <article class="step"><small>STEP 01</small><b>启动诊断工具</b><p>等待并识别本机《黑神话：悟空》进程，完成权限和数据源自检。</p></article>
+        <article class="step"><small>STEP 02</small><b>持续真实采集</b><p>游戏运行后持续落盘性能数据与可读取的真实游戏日志。</p></article>
+        <article class="step"><small>STEP 03</small><b>浮窗显示状态</b><p>独立置顶小组件显示采集中、采集时长和关键数据源状态。</p></article>
+        <article class="step"><small>STEP 04</small><b>快捷键填写时间</b><p>发现 Bug 后打开轻量面板，只填写大致开始与结束时间。</p></article>
+        <article class="step"><small>STEP 05</small><b>本地模拟提交</b><p>其它缺陷字段使用只读示例；系统截取区间并生成证据包。</p></article>
+        <article class="step"><small>STEP 06</small><b>模拟接收页面</b><p>展示 QA 信息完整性视图和研发性能曲线、日志与来源视图。</p></article>
+      </div>
+      <div class="demo-gallery" aria-label="Demo 实际运行截图">
+        <figure class="demo-shot"><button type="button" class="open-demo-shot" data-image="assets/images/demo-step-1.png" aria-label="放大查看 STEP 1 启动工具"><img src="assets/images/demo-step-1.png" alt="STEP 1 启动工具截图"></button><figcaption>STEP 1 启动工具</figcaption></figure>
+        <figure class="demo-shot"><button type="button" class="open-demo-shot" data-image="assets/images/demo-step-2-3.png" aria-label="放大查看 STEP 2-3 采集数据"><img src="assets/images/demo-step-2-3.png" alt="STEP 2-3 采集数据截图"></button><figcaption>STEP 2-3 采集数据</figcaption></figure>
+        <figure class="demo-shot"><button type="button" class="open-demo-shot" data-image="assets/images/demo-step-4-5.png" aria-label="放大查看 STEP 4-5 填写时间并提交缺陷"><img src="assets/images/demo-step-4-5.png" alt="STEP 4-5 填写时间并提交缺陷截图"></button><figcaption>STEP 4-5 填写时间并提交缺陷</figcaption></figure>
+      </div>
+      <a class="demo-report-link" href="attachments/demo-step-6-report/feedback.html" target="_blank" rel="noopener">STEP 6 接收页面</a>
+      </div>
+      <div class="subsection" id="scope">
+        <div class="subsection-head"><h3>范围与规则</h3><p>固定 Demo 的能力边界、时间选择范围与上下文截取规则。</p></div>
+      <div class="grid-2">
+        <article class="card"><h3>Demo 验收边界</h3><ul><li><strong>真实链路：</strong>在 Windows PC 上识别《黑神话：悟空》，持续采集性能与可读取日志，并按用户选择的时间段生成证据。</li><li><strong>本地演示：</strong>缺陷文字、处理状态和接收页面用于演示；提交只生成本地记录，不发送外部系统。</li><li><strong>验收重点：</strong>数据来源真实、时间对齐准确、缺失原因可见，工具异常不影响游戏运行。</li></ul></article>
+        <article class="card"><h3>明确不做</h3><ul><li>不建设完整缺陷系统，不接入 Jira、SSO、服务器或数据库。</li><li>不注入游戏进程，不开发游戏内插件或读取游戏内存。</li><li>不做录屏、网络抓包、存档解析和自动根因判断。</li><li>本期只验证《黑神话：悟空》，不承诺兼容其它游戏或电脑环境。</li><li>缺陷字段与 QA 状态仅作本地演示；仓库不保存真实日志、游戏文件或大型产物。</li></ul></article>
+      </div>
+      <div class="table-wrap" style="margin-top:14px"><table>
+        <thead><tr><th>规则</th><th>Demo 固定值</th><th>产品理由</th><th>边界处理</th></tr></thead>
+        <tbody>
+          <tr><td><strong>可回溯历史范围</strong></td><td>最近 30 分钟</td><td>兼顾用户回忆可靠性、逐帧数据量与演示复杂度。</td><td>工具启动不足 30 分钟时，只能选择实际已采集区间。</td></tr>
+          <tr><td><strong>单次最长问题区间</strong></td><td>10 分钟</td><td>避免将过长数据重新交给研发筛选。</td><td>超过上限时阻止提交，并提示缩小范围。</td></tr>
+          <tr><td><strong>默认选择</strong></td><td>最近 1 分钟</td><td>覆盖最常见的即时发现问题场景。</td><td>提供常用区间快捷项，并允许以“X 分 X 秒前”微调开始与结束。</td></tr>
+          <tr><td><strong>最短问题区间</strong></td><td>10 秒</td><td>避免误触生成无有效样本的证据。</td><td>瞬时问题仍以 10 秒区间提交。</td></tr>
+          <tr><td><strong>自动上下文</strong></td><td>前后各 15 秒</td><td>观察问题出现前的诱因和结束后的恢复。</td><td>接近会话边界时按实际可用数据裁剪并提示。</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout"><strong>时间定义：</strong>页面同时显示“用户选择区间”和“系统实际截取区间”。例如用户选择 12 分钟前至 10 分钟前，证据包实际截取 12 分 15 秒前至 9 分 45 秒前。</div>
+      <details class="term-notes"><summary>Q&amp;A｜30 分钟回溯与资源消耗</summary><div class="term-list"><p><strong>Q：30 分钟是否也是持续采集的范围，为什么定为 30 分钟？</strong><br>工具在游戏运行期间持续采集，30 分钟指滚动保留窗口：新数据持续写入，超过 30 分钟的旧数据自动清理，已生成的证据包单独保存。该时长用于覆盖试玩者延迟反馈的常见情况，同时兼顾时间回忆的可靠性和本地数据量；它是 MVP 默认值，不是技术上限。</p><p><strong>Q：持续采集会消耗多少机器资源？</strong><br>CPU、内存和 GPU 状态的低频采样开销较小，主要消耗来自逐帧数据、PresentMon 和高频游戏日志。MVP 的控制目标是新增 CPU 占用约 1%—2% 以内、内存几十 MB 以内，普通 30 分钟指标文件为几 MB 至几十 MB，GPU 基本不增加额外负载；最终数值须在目标电脑上通过开启与关闭工具的对照测试确认，并用流式写盘、滚动清理和容量上限防止数据持续增长。</p></div></details>
+      </div>
+      <details class="design-fold" id="experience"><summary>交互流程与页面设计</summary><div class="fold-body">
+      <div class="grid-3" style="margin-top:14px">
+        <article class="card"><span class="tag red">游戏中</span><h3>采集状态浮窗</h3><p>独立进程、无边框置顶，仅显示游戏已识别、采集时长和性能/日志数据源状态。默认不展示复杂曲线，不抢占键鼠焦点。</p></article>
+        <article class="card"><span class="tag">快捷键后</span><h3>缺陷反馈面板</h3><p>窗口取得前台焦点并释放游戏的鼠标捕获与光标限制，使鼠标和键盘只操作反馈表单，避免背景游戏随鼠标移动。页面按普通缺陷表单组织：问题描述、复现方式和预期结果使用带红色必填星号的锁定输入框；问题时间提供常用快捷项，并实时显示区间与绝对时刻。</p></article>
+        <article class="card"><span class="tag violet">提交后</span><h3>QA / 研发接收页</h3><p>QA 视图按问题描述、复现方式、预期结果和“用户上报问题发生时间段”直接呈现反馈；时间采用本地日期、时分秒和 UTC 偏移量的易读格式。研发视图将原始证据下载入口及五个文件的折叠说明置于最前，然后展示区间摘要、性能曲线和日志。日志支持按级别筛选，并按相同内容合并显示首次、末次时间及次数，同时保留逐条原始事件。</p></article>
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <article class="card"><h3>时间输入方式</h3><ul><li>主方式：点击常用时间区间快捷项，不要求用户理解双滑块方向。</li><li>微调方式：在开始/结束的分钟或秒数框上滚动鼠标滚轮；分钟每次 ±1，秒数每次 ±5。</li><li>摘要同时显示“2 分 05 秒前 → 30 秒前”、持续时长和绝对时刻，减少理解偏差。</li><li>选择超出已采集范围、开始晚于结束或超过 10 分钟时即时阻止。</li></ul></article>
+        <article class="card"><h3>锁定反馈字段</h3><ul><li>问题描述、复现方式和预期结果采用标准只读输入框显示固定内容。</li><li>必填字段使用红色星号，保持与常规缺陷表单一致。</li><li>QA 接收页直接呈现字段和值，不显示“演示数据”“真实选择”等说明标签。</li><li>按钮文案使用“提交缺陷反馈”；本 Demo 的提交结果仍只保存到本地，不发送 Jira。</li></ul></article>
+      </div>
+      <div class="callout"><strong>推荐运行方式：</strong>《黑神话：悟空》使用无边框窗口模式。若独占全屏导致置顶浮窗不可见，工具应提示运行限制，而不是改用注入或 Hook 绕过。</div>
+      </div></details>
+    </section>
+
+    <section class="panel" id="technical-design">
+      <div class="section-head"><div class="no">03</div><div><h2>技术方案设计</h2><p class="lead">集中说明技术选型、组件分工、系统架构、采集口径和数据设计。</p></div></div>
+      <div class="subsection" id="decision">
+        <div class="subsection-head"><h3>技术选型</h3><p>区分开源组件、Windows 系统能力与自行研发部分。</p></div>
+      <div class="grid-3">
+        <article class="card"><span class="tag red">开源组件</span><h3>复用成熟采集与展示能力</h3><p>PresentMon、psutil、Chart.js。</p></article>
+        <article class="card"><span class="tag">系统能力</span><h3>调用 Windows 与 Python 运行时</h3><p>Performance Counters、RegisterHotKey、Tkinter 和 Python 标准库。</p></article>
+        <article class="card"><span class="tag violet">自行研发</span><h3>完成业务闭环</h3><p>进程识别、调度、时间统一、滚动存储、区间导出、脱敏、浮窗及离线报告。</p></article>
+      </div>
+      </div>
+      <div class="subsection" id="reuse">
+        <div class="subsection-head"><h3>组件选择与开发分工</h3><p>说明各项能力的方案、许可、开发内容和限制。</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>能力</th><th>方案</th><th>来源/许可</th><th>Demo 决策</th><th>需要自行开发</th><th>主要限制</th></tr></thead>
+        <tbody>
+          <tr><td><strong>进程发现</strong></td><td>psutil</td><td>开源；BSD-3-Clause</td><td class="yes">使用</td><td>进程名配置、PID 变更和退出恢复</td><td>存在多个同名进程时，由操作人员选择，或按已配置规则选定。</td></tr>
+          <tr><td><strong>进程 CPU、内存</strong></td><td>psutil</td><td>开源；BSD-3-Clause</td><td class="yes">使用</td><td>采样循环、归一化和状态记录</td><td>进程 CPU 原始值可能超过 100%，UI 必须说明归一化口径。</td></tr>
+          <tr><td><strong>FPS、帧时间、GPU Busy</strong></td><td>Intel PresentMon CLI 2.5.1</td><td>开源；MIT</td><td class="yes">使用</td><td>子进程管理、标准输出流式解析、原始 CSV 归档和秒级聚合</td><td>依赖 Windows ETW；账户需属于“Performance Log Users”组或以管理员运行；不同呈现模式的指标含义不同。</td></tr>
+          <tr><td><strong>游戏进程 GPU 占用</strong></td><td>Windows GPU Engine Counter</td><td>Windows 内置</td><td class="optional">条件接入</td><td>枚举 PID 对应计数器、聚合和数据源标记</td><td>显卡驱动和系统可能不暴露一致的计数器；整机值不得标记为进程值。</td></tr>
+          <tr><td><strong>GPU 温度、功耗、频率</strong></td><td>LibreHardwareMonitorLib</td><td>开源；MPL-2.0</td><td class="nope">不纳入 Demo</td><td>硬件适配器及单位映射</td><td>偏设备级而非进程级，部分传感器需要管理员权限，并增加兼容性验证范围。</td></tr>
+          <tr><td><strong>厂商设备级补充</strong></td><td>选配适配器；本机使用 nvidia-smi</td><td>驱动附带；非本项目开源依赖</td><td class="optional">本机选配</td><td>命令调用、超时、能力检测和来源标注</td><td>设备级值不等于游戏进程占用；不存在相应厂商适配器时必须降级，不影响主闭环。</td></tr>
+          <tr><td><strong>日志读取</strong></td><td>Python 标准库</td><td>运行时自带</td><td class="yes">使用</td><td>增量读取、轮转检测、编码降级、时间解析</td><td>正式发行版可能关闭日志；日志路径通过配置提供。</td></tr>
+          <tr><td><strong>置顶浮窗与快捷键</strong></td><td>Tkinter + ctypes/RegisterHotKey</td><td>Python/Windows 运行时自带</td><td class="yes">使用</td><td>无边框置顶、状态展示、快捷键冲突和焦点恢复</td><td>独占全屏可能不显示；Demo 推荐无边框窗口模式，禁止注入式实现。</td></tr>
+          <tr><td><strong>时间轴图表</strong></td><td>Chart.js 4.5.1</td><td>开源；MIT</td><td class="yes">使用</td><td>缩放、区间联动、异常标记、空值展示</td><td>依赖文件随应用分发，不使用在线 CDN。</td></tr>
+          <tr><td><strong>会话数据</strong></td><td>JSONL + PresentMon 原始 CSV</td><td>自行定义</td><td class="yes">使用</td><td>Schema、追加写、30 分钟滚动清理、容量上限和区间导出器</td><td>标准输出在解析的同时归档；已生成的证据包单独保存，活跃会话规范化数据只保留最近 30 分钟。</td></tr>
+        </tbody>
+      </table></div>
+      </div>
+      <div class="subsection" id="architecture">
+        <div class="subsection-head"><h3>完整链路与代码结构</h3><p>按实际代码说明程序如何运行，以及各模块接收什么、负责什么、产出什么。</p></div>
+      <div class="runtime-chain" aria-label="完整运行链路">
+        <span>用户运行 PowerShell 脚本</span><i>↓</i>
+        <span>CLI 读取运行参数</span><i>↓</i>
+        <span>AppConfig（本项目定义的配置对象）形成统一配置</span><i>↓</i>
+        <span>DiagnosticEngine（本项目定义的核心调度模块）启动后台采集线程</span><i>↓</i>
+        <span>ProcessFinder（本项目定义的进程查找模块）等待并识别游戏渲染进程</span><i>↓</i>
+        <span>SessionStore（本项目定义的会话存储模块）创建本次运行会话</span><i>↓</i>
+        <span>多个 Collector（采集器）持续采集性能与日志</span><i>↓</i>
+        <span>数据转换为统一 MetricRecord（性能指标记录）/ EventRecord（事件记录）</span><i>↓</i>
+        <span>按统一 UTC 时间轴写入 JSONL</span><i>↓</i>
+        <span>用户通过浮窗选择问题时间段</span><i>↓</i>
+        <span>RangeExporter（本项目定义的范围导出模块）校验、截取、统计和脱敏</span><i>↓</i>
+        <span>生成本地证据包与 QA / 研发 HTML 报告</span>
+      </div>
+      <div class="callout good"><strong>总体原则：</strong>启动、配置、编排、采集、存储、查询和展示彼此分离；任何一个采集源失败，都不应导致游戏或整个工具退出。</div>
+      <div class="table-wrap" style="margin-top:14px"><table>
+        <thead><tr><th>代码部分</th><th>主要文件</th><th>输入</th><th>作用</th><th>输出</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PowerShell 启动脚本</strong></td><td><code>scripts/setup.ps1</code><br><code>run-real.ps1</code><br><code>verify.ps1</code></td><td>Windows 环境、Python 路径和启动命令</td><td>创建运行环境、安装锁定依赖，并启动真实采集或自动验证。</td><td>可运行环境与 Demo 进程</td></tr>
+          <tr><td><strong>CLI 入口</strong></td><td><code>__main__.py</code><br><code>cli.py</code></td><td>进程名、日志路径、会话目录和采集开关等命令行参数</td><td>解析参数，选择 GUI 或无界面模式，并组装程序入口。</td><td>传给 AppConfig 的参数及运行模式</td></tr>
+          <tr><td><strong>统一配置</strong></td><td><code>config.py</code><br><code>AppConfig</code></td><td>CLI 参数、系统环境和项目默认值</td><td>集中保存目标进程、文件路径、采样频率、30 分钟窗口、区间限制和功能开关。</td><td>供 Engine、UI 与 Exporter 共用的 <code>AppConfig</code></td></tr>
+          <tr><td><strong>核心编排</strong></td><td><code>engine.py</code><br><code>DiagnosticEngine</code></td><td><code>AppConfig</code> 与停止/导出请求</td><td>启动后台线程，组织进程发现、会话生命周期和各采集器，并隔离数据源故障。</td><td>运行状态快照、会话数据和区间导出结果</td></tr>
+          <tr><td><strong>进程识别</strong></td><td><code>collectors/process.py</code><br><code>ProcessFinder</code></td><td>目标进程名与路径匹配规则</td><td>轮询 Windows 进程，定位《黑神话：悟空》的目标渲染进程。</td><td>包含 PID、进程名和路径的 <code>ProcessMatch</code></td></tr>
+          <tr><td><strong>采集器</strong></td><td><code>collectors/process.py</code><br><code>presentmon.py</code><br><code>gpu.py</code><br><code>log_tailer.py</code></td><td>PID、日志路径、当前时间和采集配置</td><td>分别采集 CPU、内存、FPS、帧时间、GPU 指标和新增日志；单项失败时记录原因并继续其它采集。</td><td>性能值、日志事件、来源状态及原始 PresentMon CSV</td></tr>
+          <tr><td><strong>统一记录模型</strong></td><td><code>models.py</code><br><code>MetricRecord</code><br><code>EventRecord</code></td><td>各采集器返回的原始值、时间、来源与状态</td><td>将不同来源的数据转换为统一字段，并区分真实零值、缺失和降级。</td><td>可序列化的指标记录、事件记录与来源状态</td></tr>
+          <tr><td><strong>会话存储</strong></td><td><code>session.py</code><br><code>SessionStore</code></td><td>统一记录、进程环境与会话状态</td><td>按 UTC 时间追加写入 JSONL，维护清单，并滚动保留最近 30 分钟的规范化数据。</td><td><code>manifest.json</code>、<code>metrics.jsonl</code>、<code>events.jsonl</code></td></tr>
+          <tr><td><strong>浮窗与时间选择</strong></td><td><code>ui.py</code><br><code>hotkey.py</code></td><td>Engine 状态、全局快捷键和用户填写的开始/结束时间</td><td>展示采集状态，接管反馈窗口输入，校验问题时间段并发起导出。</td><td>用户选择的 UTC 起止时间</td></tr>
+          <tr><td><strong>范围导出</strong></td><td><code>exporter.py</code><br><code>RangeExporter</code></td><td>会话目录与用户选择的 UTC 区间</td><td>校验区间，扩展前后各 15 秒，筛选记录、统计指标并脱敏日志。</td><td>selection、summary、metrics、events、日志及来源状态文件</td></tr>
+          <tr><td><strong>报告生成</strong></td><td><code>report.py</code></td><td>会话清单、区间选择、汇总结果、证据与数据源状态</td><td>将同一证据组织为 QA 信息视图和研发排查视图。</td><td>可离线打开的 <code>feedback.html</code></td></tr>
+          <tr><td><strong>验证支持</strong></td><td><code>synthetic.py</code><br><code>tests/</code></td><td>固定样例、边界条件和测试配置</td><td>在无游戏环境下验证链路，并回归解析、存储、导出和 UI 规则。</td><td>合成会话、测试结果与失败信息</td></tr>
+        </tbody>
+      </table></div>
+      </div>
+      <div class="subsection" id="metrics">
+        <div class="subsection-head"><h3>采集指标与口径</h3><p>统一指标来源、计算方式和缺失处理规则。</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>界面指标</th><th>原始数据</th><th>采样/聚合</th><th>展示口径</th><th>缺失处理</th></tr></thead>
+        <tbody>
+          <tr><td><strong>游戏 CPU %</strong></td><td>psutil Process.cpu_percent</td><td>1 Hz</td><td>同时保存 raw；界面值按逻辑核心数归一化到 0–100%</td><td><span class="state missing">UNAVAILABLE</span> 记录进程退出或权限错误。</td></tr>
+          <tr><td><strong>游戏内存 MB</strong></td><td>Process.memory_info().rss</td><td>1 Hz</td><td>RSS / 1024²；表示当前驻留物理内存</td><td>显示断点，不使用前值永久填充。</td></tr>
+          <tr><td><strong>App FPS</strong></td><td>PresentMon MsBetweenPresents</td><td>逐帧 → 1 秒</td><td>1 秒内有效帧数/有效时间；同时展示平均帧时间</td><td>PresentMon 不可用时整条指标标记缺失。</td></tr>
+          <tr><td><strong>帧时间 P95</strong></td><td>MsBetweenPresents</td><td>1 秒窗口</td><td>取该秒帧时间的 95 分位数，突出卡顿尖峰</td><td>有效帧不足时为 null，并记录样本数。</td></tr>
+          <tr><td><strong>GPU Busy ms</strong></td><td>PresentMon 2.5.1 <code>GPUBusy</code></td><td>逐帧 → 1 秒</td><td>展示每帧中位数/P95；不命名为 GPU 占用率</td><td>驱动或追踪不支持时为 null。</td></tr>
+          <tr><td><strong>游戏 GPU %</strong></td><td>Windows GPU Engine</td><td>1 Hz</td><td>只在确认实例包含目标 PID 时显示“进程 GPU %”</td><td>否则隐藏该曲线，或明确标记“整机 GPU %”。</td></tr>
+          <tr><td><strong>游戏日志事件</strong></td><td>本机《黑神话：悟空》实际日志文件</td><td>新增行触发</td><td>保留原文、级别、原始时间与采集时间，并记录文件来源</td><td>不存在或不可读时标记 unavailable；不得用示例日志替代。</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><strong>缺失值规则：</strong><code>null + reason</code> 表示未采集；<code>0</code> 仅表示实际采样结果为零。</div>
+      </div>
+      <div class="subsection" id="data">
+        <div class="subsection-head"><h3>会话数据与证据包约定</h3><p>固定本地目录、公共字段和时间区间的保存方式。</p></div>
+      <div class="grid-2">
+        <article class="card"><h3>目录结构</h3><div class="code">sessions/
+└── 20260824_193015_&lt;session-id&gt;/
+    ├── manifest.json
+    ├── metrics.jsonl
+    ├── events.jsonl
+    ├── raw/presentmon.csv
+    └── submissions/
+        └── &lt;submission-id&gt;/
+            ├── selection.json
+            ├── range-summary.json
+            ├── metrics.csv
+            ├── events.jsonl
+            ├── game-log.txt
+            ├── source-status.json
+            └── feedback.html</div></article>
+        <article class="card"><h3>统一字段</h3><div class="code">{
+  "schema_version": "0.1",
+  "session_id": "uuid",
+  "ts_utc_ms": 1787571015123,
+  "elapsed_ms": 45123,
+  "source": "psutil",
+  "metric": "process_cpu_pct",
+  "value": 63.4,
+  "unit": "percent",
+  "status": "ok",
+  "reason": null
+}</div></article>
+      </div>
+      <div class="grid-3" style="margin-top:14px">
+        <article class="card"><h3>用户选择区间</h3><p><code>selected_start_utc_ms</code> 与 <code>selected_end_utc_ms</code> 保存用户填写的原始时间范围，最长 10 分钟。</p></article>
+        <article class="card"><h3>系统截取区间</h3><p><code>export_start_utc_ms</code> 与 <code>export_end_utc_ms</code> 在用户区间前后各扩展 15 秒，并按实际会话边界裁剪。</p></article>
+        <article class="card"><h3>数据真实性</h3><p>每类数据记录 <code>source</code>、<code>status</code>、覆盖起止时间与失败原因；示例缺陷字段单独标记 <code>demo_only_fields=true</code>。</p></article>
+      </div>
       </div>
     </section>
 
-    <section id="documents">
-      <div class="section-head"><div class="num">03</div><div><h2>产品与技术文档</h2><p>两份 HTML 均可在线阅读，也可在本地离线打开。</p></div></div>
-      <div class="grid">
-        <a class="card card-link" href="performance-log-tracing-design.html"><span class="tag">需求 + 技术</span><h3>性能与日志追溯 Demo 设计稿</h3><p>需求价值、演示范围、交互流程、采集口径、数据模型、测试标准和实机问题修复记录。</p></a>
-        <a class="card card-link" href="defect-feedback-system-prd.html"><span class="tag">产品设计</span><h3>缺陷反馈系统 PRD</h3><p>从反馈入口、环境自动采集、原始提交留档到 Jira 同步的完整产品需求与验收口径。</p></a>
-        <a class="card card-link" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase"><span class="tag">Implementation</span><h3>源码、测试与构建脚本</h3><p>查看进程发现、性能采集、日志跟踪、区间导出、报告生成、GUI 和便携发行实现。</p></a>
+    <section class="panel" id="acceptance-debug">
+      <div class="section-head"><div class="no">04</div><div><h2>验收与调试</h2><p class="lead">汇总稳定性要求、验收用例和实机问题修复记录。</p></div></div>
+      <div class="subsection" id="stability">
+        <div class="subsection-head"><h3>稳定性、约束与开发规则</h3><p>保证失败状态可见、数据可追溯、模块可独立验证。</p></div>
+      <div class="grid-3">
+        <article class="card"><h3>运行稳定性</h3><ul><li>采集线程与 UI 分离。</li><li>每条记录写完立即换行并定期 flush。</li><li>子采集器失败不拖垮主进程。</li><li>目标开销：CPU 平均 &lt; 2%，内存 &lt; 150 MB。</li><li>游戏退出后 5 秒内关闭会话并保存清单。</li></ul></article>
+        <article class="card"><h3>安全与合规</h3><ul><li>仅采集公开系统数据和已确认路径中的真实游戏日志。</li><li>不注入、不 Hook、不读取或修改游戏内存。</li><li>日志导出前对 Token、Cookie、账号标识做基础脱敏。</li><li>仓库不提交游戏文件、真实日志和大型采集产物。</li><li>第三方组件随包附 LICENSE/NOTICE。</li></ul></article>
+        <article class="card"><h3>开发质量门禁</h3><ul><li>每次新增或调整一个 Adapter。</li><li>使用固定 fixture 完成测试后再接入真实系统。</li><li>固定依赖版本并生成 requirements.lock。</li><li>公共 Schema 变更必须更新版本和回归用例。</li><li>每个可运行节点单独提交版本记录。</li><li>新增代码必须通过命令、测试和样例数据验证。</li></ul></article>
+      </div>
+      <div class="callout warn"><strong>不接受的实现：</strong>吞掉异常、用默认值补齐失败指标、只验证示例数据，或在同一次变更中同时重写采集层、数据层和页面层。</div>
+      </div>
+      <div class="subsection" id="tests">
+        <div class="subsection-head"><h3>测试用例与验收标准</h3><p>P0 为 Demo 验收阻断用例，真实性优先于页面完整度。</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>ID</th><th>范围</th><th>前置条件</th><th>操作</th><th>预期结果</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>T-01</td><td>进程</td><td>游戏未启动</td><td>启动采集器并等待</td><td>显示“等待目标进程”，不创建伪造指标。</td><td>P0</td></tr>
+          <tr><td>T-02</td><td>进程</td><td>本机启动《黑神话：悟空》</td><td>自动识别</td><td>按固定进程规则选中正确 PID，并在浮窗展示进程名与状态。</td><td>P0</td></tr>
+          <tr><td>T-03</td><td>CPU/内存</td><td>目标进程运行</td><td>持续采样 10 分钟</td><td>每秒一条有效记录；中途退出后会话安全关闭。</td><td>P0</td></tr>
+          <tr><td>T-04</td><td>PresentMon</td><td>缺少 EXE 或权限不足</td><td>开始会话</td><td>FPS 标记 unavailable；CPU、内存和日志继续记录。</td><td>P0</td></tr>
+          <tr><td>T-05</td><td>帧数据</td><td>准备固定 PresentMon CSV</td><td>执行聚合</td><td>FPS、帧时间 P95 与人工计算结果一致，误差 &lt; 0.5%。</td><td>P0</td></tr>
+          <tr><td>T-06</td><td>GPU</td><td>无法确认 PID 计数器</td><td>读取 GPU</td><td>不输出“游戏 GPU %”；说明当前可用的是 GPU Busy 或整机数据。</td><td>P0</td></tr>
+          <tr><td>T-07</td><td>真实日志</td><td>游戏产生可读日志</td><td>运行游戏并触发新增日志</td><td>记录真实文件来源、原始内容和时间；不混入示例日志。</td><td>P0</td></tr>
+          <tr><td>T-08</td><td>时间对齐</td><td>性能尖峰与 ERROR 相差 2 秒</td><td>导入查看器</td><td>曲线与日志在统一时间轴正确对齐，偏差 ≤ 1 秒。</td><td>P0</td></tr>
+          <tr><td>T-09</td><td>区间导出</td><td>选择 60 秒区间</td><td>提交缺陷反馈</td><td>证据包区分用户区间与前后各 15 秒上下文，并包含数据源状态。</td><td>P0</td></tr>
+          <tr><td>T-10</td><td>性能</td><td>游戏运行 30 分钟</td><td>后台采集</td><td>采集器平均 CPU &lt; 2%、内存 &lt; 150 MB，未明显改变游戏表现。</td><td>P1</td></tr>
+          <tr><td>T-11</td><td>异常恢复</td><td>采集时强制结束进程</td><td>重新打开会话</td><td>已写 JSONL 可读取；manifest 标记 abnormal_end=true。</td><td>P0</td></tr>
+          <tr><td>T-12</td><td>离线查看</td><td>证据包已生成</td><td>断网打开 feedback.html</td><td>无需联网即可查看锁定反馈字段、真实性能曲线、真实日志与来源状态。</td><td>P0</td></tr>
+          <tr><td>T-13</td><td>浮窗/快捷键</td><td>游戏以无边框窗口运行</td><td>按全局快捷键</td><td>反馈面板取得前台焦点并释放游戏鼠标捕获；填写时背景视角不随鼠标移动，关闭后焦点可恢复。</td><td>P0</td></tr>
+          <tr><td>T-14</td><td>回溯边界</td><td>已采集 30 分钟以上</td><td>选择超过 30 分钟前或跨度超过 10 分钟</td><td>即时阻止并说明最近 30 分钟与单次 10 分钟限制。</td><td>P0</td></tr>
+          <tr><td>T-15</td><td>模拟边界</td><td>生成反馈页面</td><td>检查页面与 selection 元数据</td><td>QA 页面按普通字段直接展示；固定示例属性仅在生成规则和元数据中保留，不与真实性能、日志混写。</td><td>P0</td></tr>
+          <tr><td>T-16</td><td>日志不可用</td><td>未找到可读游戏日志</td><td>提交缺陷反馈</td><td>页面显示 unavailable 和原因；不得生成伪造日志；Demo 记录为未完整通过。</td><td>P0</td></tr>
+          <tr><td>T-17</td><td>日志查看</td><td>同一日志内容连续出现多次</td><td>打开研发诊断视图并切换级别筛选</td><td>页面合并相同事件并显示首次、末次与次数；events.jsonl 仍保留全部逐条原始记录。</td><td>P0</td></tr>
+        </tbody>
+      </table></div>
+      <div class="checks" style="margin-top:14px"><div class="check">至少一份《黑神话：悟空》真实 30 分钟会话可被查看。</div><div class="check">快捷键、时间选择、证据截取和 QA / 研发接收页端到端可演示。</div><div class="check">真实性能与真实日志来源清晰；固定反馈字段不进入采集数据。</div><div class="check">缺失 GPU 或日志时页面仍可用、原因清楚且不伪造。</div></div>
+      </div>
+      <div class="subsection" id="debug-records">
+        <div class="subsection-head"><h3>实机调试与问题修复记录</h3><p>记录目标 Windows 电脑和实际游戏环境中的问题、原因、方案与状态。</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>问题现象</th><th>原因定位</th><th>解决方案</th><th>验证状态</th></tr></thead>
+        <tbody>
+          <tr><td><strong>问题 1｜时间选择难以理解</strong></td><td>滑块操作不直观；仅显示秒数，不符合用户回忆时间的表达习惯。</td><td>分别填写问题开始和结束于“几分几秒前”，统一显示为“X 分 XX 秒”；数字框支持鼠标滚轮调整。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 2｜填写反馈时仍会操控游戏</strong></td><td>游戏继续持有鼠标捕获和输入焦点，填写反馈时会同时带动游戏视角。</td><td>打开反馈窗口时解除鼠标捕获与光标限制，将焦点转移至反馈窗口；关闭后恢复游戏焦点。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 3｜报告出现异常帧时间和失真的平均 FPS</strong></td><td>切换后台或焦点变化产生异常长帧和高 Present FPS 样本，污染正常游玩数据。</td><td>新会话记录游戏前台状态；确认处于后台的时间不进入摘要和主曲线，但继续保留在原始数据中；FPS 与帧时间分开呈现。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 4｜游戏操作时容易误点浮窗</strong></td><td>浮窗是独立置顶窗口，Windows 会优先将命中区域内的点击交给浮窗。</td><td>仅在游戏处于前台且隐藏鼠标进行视角操控时启用点击穿透；鼠标显示、游戏失焦或反馈窗口打开时恢复正常交互。</td><td><span class="state ok">已完成</span></td></tr>
+          <tr><td><strong>问题 5｜游戏启动初期 process_gpu 偶尔显示 UNAVAILABLE</strong></td><td>游戏进程创建后约 1～2 秒内，Windows 尚未注册对应 GPU Engine 实例；PDH_NO_DATA 被误判为永久故障。</td><td>将该状态视为暂时未就绪，每 2 秒重新建立查询；取得有效样本后自动恢复为 OK，等待期间保留具体原因。</td><td><span class="state degraded">已完成，未充分验证</span></td></tr>
+        </tbody>
+      </table></div>
+      <details class="term-notes"><summary>问题3报告记录</summary><div class="term-list"><a class="demo-report-link" style="margin-top:0" href="attachments/demo-problem-3-before-report/feedback.html" target="_blank" rel="noopener">修复前｜02 Bad Case：出现异常帧</a><a class="demo-report-link" style="margin-top:0" href="attachments/demo-problem-3-after-report/feedback.html" target="_blank" rel="noopener">修复后｜03 解决异常帧</a></div></details>
       </div>
     </section>
 
-    <section id="screens">
-      <div class="section-head"><div class="num">04</div><div><h2>实机运行截图</h2><p>从等待游戏启动、游戏内采集到缺陷反馈时间选择。</p></div></div>
-      <div class="gallery">
-        <figure class="shot"><img src="assets/images/demo-step-1.png" alt="启动工具并等待目标游戏"><figcaption>启动工具与环境状态</figcaption></figure>
-        <figure class="shot"><img src="assets/images/demo-step-2-3.png" alt="游戏内采集状态浮窗"><figcaption>游戏内持续采集</figcaption></figure>
-        <figure class="shot"><img src="assets/images/demo-step-4-5.png" alt="缺陷反馈时间选择窗口"><figcaption>选择问题时间并提交反馈</figcaption></figure>
-      </div>
-    </section>
-
-    <section id="reports">
-      <div class="section-head"><div class="num">05</div><div><h2>QA / 研发报告示例</h2><p>三份示例均来自本机真实采集，完整保留性能时间序列、异常帧与游戏日志事件。</p></div></div>
-      <div class="grid">
-        <a class="card card-link" href="attachments/demo-step-6-report/feedback.html"><span class="tag">标准流程</span><h3>01 标准诊断报告</h3><p>查看完整反馈、区间摘要、性能曲线、日志事件与原始证据入口。</p></a>
-        <a class="card card-link" href="attachments/demo-problem-3-before-report/feedback.html"><span class="tag">Bad Case</span><h3>02 异常帧污染</h3><p>展示后台切换造成极端帧时间和失真摘要时的旧版报告表现。</p></a>
-        <a class="card card-link" href="attachments/demo-problem-3-after-report/feedback.html"><span class="tag">修复结果</span><h3>03 前台状态过滤</h3><p>保留原始证据，同时从主摘要和曲线排除已确认的后台区间。</p></a>
-      </div>
-    </section>
-
-    <section id="engineering">
-      <div class="section-head"><div class="num">06</div><div><h2>工程实现</h2><p>优先保证数据真实性、失败隔离和低侵入性。</p></div></div>
-      <div class="architecture">
-        <article class="arch"><strong>采集层</strong><span>psutil · PresentMon · Windows GPU Engine · 日志增量跟踪</span></article>
-        <article class="arch"><strong>时间轴层</strong><span>UTC 毫秒对齐 · 秒级聚合 · 前台状态 · 30 分钟滚动窗口</span></article>
-        <article class="arch"><strong>证据层</strong><span>CSV · JSONL · 来源状态 · 区间摘要 · 真实日志事件</span></article>
-        <article class="arch"><strong>呈现与发行</strong><span>Tkinter 浮窗 · 离线 HTML · Chart.js · PyInstaller 便携包</span></article>
-      </div>
-    </section>
-
-    <section class="privacy">
-      <div class="section-head"><div class="num">✓</div><div><h2>公开展示数据边界</h2><p>保留诊断价值，同时避免暴露无关个人信息。</p></div></div>
-      <p>三份报告保留真实采集的性能数据、日志事件、进程、主机和会话信息；仅移除用户名及本机绝对路径。游戏文件、构建缓存和与展示无关的个人数据不会公开。Demo 不注入游戏进程，不读取或修改游戏内存，也不规避反作弊。</p>
+    <section class="panel" id="sources">
+      <div class="section-head"><div class="no">05</div><div><h2>参考资料与许可检查</h2><p class="lead">可分发版本锁定依赖版本，并随包保留对应许可文本。</p></div></div>
+      <ul class="sources">
+        <li><a href="https://github.com/GameTechDev/PresentMon" target="_blank" rel="noreferrer">Intel PresentMon 官方仓库</a>：Windows 图形应用逐帧性能采集；MIT License。</li>
+        <li><a href="https://github.com/GameTechDev/PresentMon/blob/main/README-ConsoleApplication.md" target="_blank" rel="noreferrer">PresentMon Console Application 文档</a>：目标进程、CSV 输出、时间戳和逐帧字段定义。</li>
+        <li><a href="https://psutil.readthedocs.io/" target="_blank" rel="noreferrer">psutil 官方文档</a>：跨平台进程与系统资源读取；BSD-3-Clause。</li>
+        <li><a href="https://learn.microsoft.com/en-us/windows/win32/perfctrs/using-performance-counters" target="_blank" rel="noreferrer">Microsoft Performance Counters 文档</a>：Windows 内置性能计数器的采集方式。</li>
+        <li><a href="https://devblogs.microsoft.com/directx/gpus-in-the-task-manager/" target="_blank" rel="noreferrer">Microsoft DirectX：GPU in Task Manager</a>：进程 GPU 与显存统计口径及聚合注意事项。</li>
+        <li><a href="https://github.com/LibreHardwareMonitor/LibreHardwareMonitor" target="_blank" rel="noreferrer">LibreHardwareMonitor 官方仓库</a>：硬件传感器扩展候选；MPL-2.0。</li>
+        <li><a href="https://github.com/chartjs/Chart.js" target="_blank" rel="noreferrer">Chart.js 官方仓库</a>：离线时间轴图表候选；MIT License。</li>
+        <li><a href="https://dev.epicgames.com/documentation/unreal-engine/logging-in-unreal-engine" target="_blank" rel="noreferrer">Unreal Engine Logging 文档</a>：日志行为需由具体构建配置决定，因此工具不写死《黑神话：悟空》的日志路径。</li>
+      </ul>
     </section>
   </main>
+  <dialog class="image-lightbox" id="demo-image-lightbox" aria-label="Demo 截图放大预览"><button type="button" id="close-demo-image" aria-label="关闭图片预览">×</button><img id="demo-image-preview" src="assets/images/demo-step-4-5.png" alt="Demo 截图放大预览"></dialog>
+  <footer><div class="wrap">缺陷现场性能与日志追溯 · 《黑神话：悟空》编程演示 Demo · 需求与技术设计 V0.5</div></footer>
+  <script>
+    (() => {
+      const dialog = document.getElementById('demo-image-lightbox');
+      const preview = document.getElementById('demo-image-preview');
+      document.querySelectorAll('.open-demo-shot').forEach(button => button.addEventListener('click', () => {
+        preview.src = button.dataset.image;
+        dialog.showModal();
+      }));
+      document.getElementById('close-demo-image').addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+      document.querySelectorAll('nav a[href^="#"]').forEach(link => link.addEventListener('click', () => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target instanceof HTMLDetailsElement) target.open = true;
+      }));
+    })();
+  </script>
+  <script>
+    (() => {
+      const toggleButton = document.getElementById('toggle-edit');
+      const saveButton = document.getElementById('save-file');
+      const downloadButton = document.getElementById('download-file');
+      const status = document.getElementById('editor-status');
+      const editableSelector = 'header h1, header .hero-copy, header .meta span, header .decision small, header .decision strong, header .decision p, main h2, main h3, main h4, main p, main li, main th, main td, main .step b, main .tag, footer .wrap';
+      let editing = false;
+      let sourceHandle = null;
+      let dirty = false;
 
-  <footer><div class="wrap">游戏性能与日志追溯 Demo · 产品设计、技术实现与 Windows 便携发行展示</div></footer>
-</body>
-</html>
+      const editableNodes = () => [...document.querySelectorAll(editableSelector)]
+        .filter(node => !node.closest('.code') && !node.querySelector('.code'));
+
+      const setStatus = (message, kind = '') => {
+        status.textContent = message;
+        status.className = `editor-status ${kind}`.trim();
+      };
+
+      const markDirty = () => {
+        if (!editing) return;
+        dirty = true;
+        setStatus('有尚未保存的文字修改', 'warn');
+      };
+
+      const setEditing = enabled => {
+        editing = enabled;
+        document.body.classList.toggle('editing', enabled);
+        editableNodes().forEach(node => {
+          if (enabled) node.setAttribute('contenteditable', 'true');
+          else node.removeAttribute('contenteditable');
+        });
+        toggleButton.textContent = enabled ? '结束编辑' : '编辑文字';
+        saveButton.disabled = !enabled;
+        downloadButton.disabled = !enabled;
+        setStatus(enabled ? '编辑模式：点击页面文字即可修改' : (dirty ? '修改尚未保存' : '当前为只读模式'), enabled ? 'ok' : (dirty ? 'warn' : ''));
+      };
+
+      const buildHtml = () => {
+        const clone = document.documentElement.cloneNode(true);
+        clone.classList.remove('editing');
+        clone.querySelector('body')?.classList.remove('editing');
+        clone.querySelectorAll('[contenteditable]').forEach(node => node.removeAttribute('contenteditable'));
+        const cloneStatus = clone.querySelector('#editor-status');
+        if (cloneStatus) {
+          cloneStatus.textContent = '当前为只读模式';
+          cloneStatus.className = 'editor-status';
+        }
+        const cloneToggle = clone.querySelector('#toggle-edit');
+        if (cloneToggle) cloneToggle.textContent = '编辑文字';
+        clone.querySelectorAll('#save-file,#download-file').forEach(button => button.setAttribute('disabled', ''));
+        return '<!doctype html>\n' + clone.outerHTML;
+      };
+
+      const downloadHtml = () => {
+        const blob = new Blob([buildHtml()], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = 'performance-diagnostic-timeline-mvp-design.html';
+        anchor.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        dirty = false;
+        setStatus('已下载修改版 HTML；请用它替换原文件', 'ok');
+      };
+
+      const saveToSource = async () => {
+        const source = buildHtml();
+        const endpoint = location.protocol === 'file:'
+          ? 'http://127.0.0.1:8766/__save_performance_design'
+          : '/__save_performance_design';
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/html;charset=utf-8' },
+            body: source
+          });
+          if (!response.ok) throw new Error(`本地保存服务返回 ${response.status}`);
+          dirty = false;
+          setEditing(false);
+          setStatus('已更新当前 HTML；刷新后仍会保留修改', 'ok');
+          return;
+        } catch (serverError) {
+          setStatus('保存服务未启动，修改仍保留在当前页面；请联系 Codex 重新启动保存服务', 'error');
+        }
+      };
+
+      toggleButton.addEventListener('click', () => setEditing(!editing));
+      saveButton.addEventListener('click', saveToSource);
+      downloadButton.addEventListener('click', downloadHtml);
+      document.addEventListener('input', markDirty);
+      document.addEventListener('keydown', event => {
+        if (!editing || !(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 's') return;
+        event.preventDefault();
+        saveToSource();
+      });
+      window.addEventListener('beforeunload', event => {
+        if (!dirty) return;
+        event.preventDefault();
+        event.returnValue = '';
+      });
+    })();
+  </script>
+
+
+<div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div>
+
+
+
+</body></html>
