@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1",
+  "submission_id": "SUB-98934D1AC1C5",
+  "session_id": "ffbe55b9-da45-4cd6-9d6b-000e22678788",
+  "created_utc_ms": 1787665306238,
+  "selected_start_utc_ms": 1787665001746,
+  "selected_end_utc_ms": 1787665301746,
+  "selected_duration_ms": 300000,
+  "export_start_utc_ms": 1787664986746,
+  "export_end_utc_ms": 1787665305752,
+  "context_seconds": 15,
+  "clipped_to_session": true,
+  "demo_only_fields": true,
+  "synthetic_evidence": false
+}

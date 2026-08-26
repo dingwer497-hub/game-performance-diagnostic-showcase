@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Jira 统一管理缺陷，P4 统一管理版本与资产的游戏内部缺陷反馈系统 MVP PRD。">
+  <title>内部缺陷反馈系统 MVP PRD｜Jira × P4</title>
+  <style>
+    :root {
+      --ink:#ddd7cc; --muted:#a8a39b; --line:#3e3932; --paper:#171513; --canvas:#090807;
+      --navy:#0f0d0c; --blue:#a58f5e; --blue-soft:#2a241b; --green:#84947c; --green-soft:#20281f;
+      --amber:#b39255; --amber-soft:#2d2518; --violet:#9b8771; --violet-soft:#2a2420;
+      --red:#a83d32; --red-soft:#321b18; --slate:#aaa39a; --slate-soft:#292623;
+      --shadow:0 18px 50px rgba(0,0,0,.28); --radius:4px;
+      --display-font:KaiTi,STKaiti,"LXGW WenKai","Songti SC",serif;
+      --body-font:Garamond,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Source Han Sans SC",sans-serif;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth;background:#050505}body{position:relative;margin:0;background:radial-gradient(circle at 16% 4%,#211d18 0,transparent 29%),radial-gradient(circle at 86% 16%,#1a1714 0,transparent 26%),linear-gradient(180deg,#0b0a09,#070606 72%,#030303);color:var(--ink);font-family:var(--body-font);line-height:1.72}
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.15;background-image:repeating-linear-gradient(12deg,transparent 0 5px,rgba(255,255,255,.012) 6px,transparent 7px),url("assets/images/zhongkui-grain.png");background-size:auto,256px 256px;background-repeat:repeat;mix-blend-mode:screen}body>*{position:relative;z-index:1}
+    button,a{font:inherit}a{color:inherit}.wrap{width:min(1240px,calc(100% - 40px));margin:0 auto}
+    header{position:relative;overflow:hidden;padding:72px 0 58px;color:#e5dfd5;background:linear-gradient(90deg,rgba(5,5,5,.95) 0%,rgba(8,7,6,.82) 45%,rgba(7,6,5,.9) 100%),radial-gradient(ellipse at 82% 16%,rgba(165,143,94,.16),transparent 31%),url("assets/images/zhongkui-title-bg.jpg") center 54%/cover no-repeat,#080706}
+    header::before{content:"";position:absolute;inset:-20% -5%;opacity:.38;background:radial-gradient(ellipse at 18% 52%,transparent 0 18%,#000 19% 20%,transparent 22%),radial-gradient(ellipse at 86% 8%,#000 0 12%,transparent 29%),repeating-linear-gradient(174deg,transparent 0 35px,rgba(255,255,255,.018) 36px,transparent 39px);filter:blur(2px)}header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,transparent 3%,#a83d32 18%,#a58f5e 51%,#a83d32 82%,transparent 97%);opacity:.72}
+    .kicker{margin:0 0 12px;color:#a58f5e;font-family:Garamond,Georgia,serif;font-size:12px;font-weight:700;letter-spacing:.24em}.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}.hero-grid>div{width:100%;min-width:0}
+    h1{width:100%;max-width:100%;margin:0;color:#e5dfd5;font-family:var(--display-font);font-size:clamp(40px,5.4vw,68px);font-weight:500;line-height:1.08;letter-spacing:.045em;overflow-wrap:anywhere;text-shadow:0 2px 22px rgba(0,0,0,.8)}.hero-copy{max-width:800px;margin:18px 0 0;color:#b5b4b2;font-size:16px}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.meta span{padding:5px 10px;border:1px solid #554b3b;border-radius:2px;background:rgba(0,0,0,.24);color:#c8c0b3;font-size:11px;letter-spacing:.03em}
+    .decision{padding:22px;border:1px solid #4b4337;border-left:3px solid var(--red);border-radius:2px;background:linear-gradient(135deg,rgba(40,35,29,.82),rgba(12,11,10,.9));box-shadow:inset 0 0 26px rgba(0,0,0,.3);backdrop-filter:blur(7px)}.decision small{display:block;color:#a58f5e;font-family:var(--display-font);font-size:13px;font-weight:700;letter-spacing:.08em}.decision strong{display:block;margin-top:8px;color:#e0d8ca;font-family:var(--display-font);font-size:20px;font-weight:500;line-height:1.5}.decision p{margin:10px 0 0;color:#aaa49a;font-size:12px}
+    nav{position:sticky;top:0;z-index:30;border-bottom:1px solid #3e352a;background:rgba(8,7,7,.94);box-shadow:0 8px 26px rgba(0,0,0,.22);backdrop-filter:blur(14px)}nav .wrap{display:flex;align-items:stretch;gap:7px;overflow-x:auto;padding:8px 0;scrollbar-width:none}.nav-index{flex:0 0 auto;display:flex;align-items:center;padding:0 15px 0 2px;color:#d2c6b3;font-family:var(--display-font);font-size:21px;font-weight:600;letter-spacing:.12em;white-space:nowrap}.nav-group{flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;border:1px solid #302a24;background:#0f0d0c}.nav-major{display:block;padding:5px 10px;color:#c0b29d;font-family:var(--display-font);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;letter-spacing:.04em}.nav-sub{display:flex;gap:2px;padding:0 5px 5px}.nav-sub a{display:block;padding:3px 6px;border-left:1px solid #4b4030;color:#817a70;font-size:10.5px;text-decoration:none;white-space:nowrap}.nav-group a:hover,.nav-group a:focus-visible{background:#2a2119;color:#c7a76a;outline:none}
+    main{padding:38px 0 78px}section{scroll-margin-top:70px;margin-bottom:24px}.panel{position:relative;padding:30px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(27,24,21,.98),rgba(18,16,15,.98));box-shadow:var(--shadow),inset 0 1px rgba(255,255,255,.025)}.panel::before{content:"";position:absolute;left:18px;right:18px;top:0;height:1px;background:linear-gradient(90deg,transparent,#766447,transparent);opacity:.55}
+    .section-head{display:grid;grid-template-columns:48px 1fr;gap:15px;align-items:start;margin-bottom:21px}.no{display:grid;place-items:center;width:44px;height:44px;border:1px solid #705d3e;border-radius:2px;background:#0c0b0a;color:#bba06d;font-family:Garamond,Georgia,serif;font-size:13px;font-weight:700}h2,h3,h4{font-family:var(--display-font);font-weight:600}h2{margin:0;color:#ded5c6;font-size:29px;line-height:1.25;letter-spacing:.055em}h3{margin:0 0 8px;color:#d4cabb;font-size:18px;line-height:1.4;letter-spacing:.025em}h4{margin:0 0 6px;color:#c8baa6;font-size:15px}p{margin:0}.lead{margin-top:5px;color:#918b82;font-size:13px}
+    .grid-2,.grid-3,.grid-4{display:grid;gap:13px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{padding:18px;border:1px solid #3c3731;border-radius:2px;background:linear-gradient(155deg,#211e1b,#151311)}.card p,.card li{color:#aaa49c;font-size:12.5px}.card ul,.card ol{margin:8px 0 0;padding-left:18px}.card li+li{margin-top:4px}.card:hover{border-color:#5c4e39}
+    .scope-stack{display:grid;width:100%;min-width:0;gap:13px}.scope-stack>.card{width:100%;min-width:0;max-width:100%}.roadmap-table{width:100%;max-width:100%;margin-top:13px;overflow-x:auto}.roadmap-table table{min-width:880px}.roadmap-table th:nth-child(1){width:23%}.roadmap-table th:nth-child(2){width:9%}.roadmap-table th:nth-child(3){width:40%}.roadmap-group td{padding:8px 11px;border-top:1px solid #564832;border-left:3px solid #8b754f;background:#211d18!important;color:#c5ad7d;font-family:var(--display-font);font-size:12px;font-weight:700;letter-spacing:.04em}.roadmap-group small{margin-left:8px;color:#81786d;font-family:var(--body-font);font-size:10px;font-weight:400;letter-spacing:0}.priority{display:inline-block;padding:2px 6px;border:1px solid #856d45;color:#c3a66c;font-family:Garamond,Georgia,serif;font-size:9px;font-weight:900;letter-spacing:.08em}.priority.p1{border-color:#5e6658;color:#98a491}.roadmap-note{margin-top:11px;padding:10px 12px;border-left:3px solid #705d3e;background:#161311;color:#918b82;font-size:11px}
+    .future-plan{width:100%;min-width:0;max-width:100%;overflow:hidden}.future-plan>summary{display:flex;align-items:center;justify-content:space-between;color:#c6b9a7;font-family:var(--display-font);font-size:18px;font-weight:600;cursor:pointer;list-style:none}.future-plan>summary::-webkit-details-marker{display:none}.future-plan>summary::after{content:"＋";color:#9b8257;font-size:18px}.future-plan[open]>summary{margin-bottom:10px}.future-plan[open]>summary::after{content:"－"}
+    .tag,.owner{display:inline-block;padding:3px 8px;border:1px solid currentColor;border-radius:2px;background:transparent!important;font-size:10px;font-weight:800;white-space:nowrap;letter-spacing:.04em}.tag{margin-bottom:10px;color:#a58f5e}.tag.red{color:#b44b40}.tag.green{color:#839a7e}.tag.amber{color:#b39255}.owner.jira{color:#b39255}.owner.p4{color:#9b8771}.owner.oss{color:#84947c}.owner.build{color:#b39255}.owner.self{color:#b44b40}
+    .callout{margin-top:14px;padding:15px 17px;border:1px solid #4b4030;border-left:4px solid var(--blue);background:linear-gradient(90deg,#292218,#1a1713);color:#bbb0a0;font-size:12.5px}.callout strong{color:#c7a76a}.callout.warn{border-color:#674039;border-left-color:var(--red);background:linear-gradient(90deg,#2d1b18,#1a1513);color:#bca49d}.callout.warn strong{color:#c65a4e}
+    .term-notes{margin-top:14px;border:1px solid #403a33;border-radius:2px;background:#12100f}.term-notes summary{padding:11px 14px;color:#bba06d;font-family:var(--display-font);font-size:13px;font-weight:700;cursor:pointer;list-style:none}.term-notes summary::-webkit-details-marker{display:none}.term-notes summary::before{content:"＋";display:inline-block;width:20px;color:#8f7650}.term-notes[open] summary::before{content:"－"}.term-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 14px 14px}.term-list p{padding:10px 12px;border:1px solid #38332e;background:#181512;color:#a9a198;font-size:11.5px}.term-list strong{color:#d0b273}.term-badge{display:inline-block;margin-right:7px;padding:1px 6px;border:1px solid #a8463c;color:#df6558;font-size:9px;font-weight:900;letter-spacing:.08em}
+    .section-head+.term-notes{margin-top:0}.term-notes+.term-notes{margin-top:8px}.term-notes+.grid-4,.term-notes+.arch,.term-notes+.filter-bar,.term-notes+.swimlane-shell,.term-notes+h3{margin-top:14px}
+    .submission-note{margin-top:11px;padding:9px 10px;border:1px solid #514139;border-left:2px solid #8f4a40;background:rgba(83,39,33,.18);color:#aaa098;font-size:10.5px;line-height:1.6}.submission-note strong{color:#c9857c}.submission-note .term-badge{border-color:#765047;color:#bd8178;background:rgba(0,0,0,.12)}
+    .manifest-note p{padding:0 14px 10px;color:#aaa39a;font-size:11.5px}.manifest-example{margin:0 14px 14px;padding:13px 15px;overflow-x:auto;border:1px solid #38332e;background:#0b0a09;color:#bcae98;font-size:11px;line-height:1.65}.manifest-example code{color:inherit}
+    .prelude{padding:14px 0;border-bottom:1px solid #332d27;background:#0b0a09}.prelude .term-notes{margin:0}
+    .arch{display:grid;grid-template-columns:1fr 46px 1fr 46px 1fr;gap:8px;align-items:stretch}.arch-box{padding:18px;border:1px solid #403a33;border-radius:2px;background:#181614}.arch-box h3{font-size:16px}.arch-box ul{margin:8px 0 0;padding-left:18px;color:#a49e95;font-size:12px}.arch-box li+li{margin-top:4px}.arrow{display:grid;place-items:center;color:#846f4b;font-size:24px;font-weight:900}.arch-box.self{border-top:3px solid var(--red)}.arch-box.jira{border-top:3px solid var(--blue)}.arch-box.p4{border-top:3px solid var(--violet)}
+    .filter-bar{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;margin-bottom:13px;padding:1px 0 5px;scrollbar-width:thin}.filter-btn{flex:0 0 auto;padding:7px 12px;border:1px solid #8d744b;border-radius:2px;background:#171513;color:#b79a64;font-size:11px;font-weight:800;cursor:pointer}.filter-btn[data-filter="p4"]{border-color:#756757;color:#a99681}.filter-btn[data-filter="oss"]{border-color:#63755f;color:#8fa18a}.filter-btn[data-filter="self"]{border-color:#8f3c34;color:#bf5146}.filter-btn:hover,.filter-btn.active{background:#2b241b;color:#d0b273}.filter-btn[data-filter="p4"]:hover,.filter-btn[data-filter="p4"].active{background:#2a2420;color:#c0aa91}.filter-btn[data-filter="oss"]:hover,.filter-btn[data-filter="oss"].active{background:#20281f;color:#a8b9a3}.filter-btn[data-filter="self"]:hover,.filter-btn[data-filter="self"].active{background:#321b18;color:#d36256}
+    .table-wrap{overflow-x:auto;border:1px solid #403a33;border-radius:2px;background:#11100f}table{width:100%;min-width:940px;border-collapse:collapse;font-size:11.5px}th{padding:11px;text-align:left;color:#c3b6a4;background:#26211c;white-space:nowrap;font-family:var(--display-font);font-size:12.5px;letter-spacing:.02em}td{padding:10px 11px;border-top:1px solid #39342f;vertical-align:top;color:#a9a39a}td strong{color:#ddd4c6}tbody tr:hover td{background:#211d18}tr.is-hidden{display:none}.nowrap{white-space:nowrap}.yes{color:#93a88d;font-weight:850}.nope{color:#ba5045;font-weight:850}code{color:#c7a76a}
+    .swimlane-shell{overflow-x:auto;padding:2px 2px 9px}.swimlane{min-width:1790px;border:1px solid #403a33;background:#11100f}.swim-head,.lane-row{display:grid;grid-template-columns:150px repeat(11,minmax(145px,1fr))}.swim-head>*{min-height:54px;border-right:1px solid #403a33;border-bottom:1px solid #4b4030}.swim-head>*:last-child,.lane-row>*:last-child{border-right:0}.swim-corner{position:sticky;left:0;z-index:4;display:flex;align-items:center;padding:12px 14px;background:#0b0a09;color:#827563;font-family:var(--display-font);font-size:12px}.swim-stage{display:flex;flex-direction:column;justify-content:center;padding:9px 11px;background:#211d18}.swim-stage small{color:#9c8256;font-family:Garamond,Georgia,serif;font-size:10px;font-weight:800;letter-spacing:.08em}.swim-stage b{color:#c9bda9;font-family:var(--display-font);font-size:13px;font-weight:600}.lane-row>*{min-height:128px;border-right:1px solid #342f2b;border-bottom:1px solid #342f2b}.lane-row:last-child>*{border-bottom:0}.lane-label{position:sticky;left:0;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:14px;background:#141210;box-shadow:8px 0 18px rgba(0,0,0,.16)}.lane-label b{font-family:var(--display-font);font-size:16px;letter-spacing:.04em}.lane-label small{margin-top:4px;color:#777168;font-size:10px}.lane-label.p4 b{color:#a99681}.lane-label.tester b{color:#c4a567}.lane-label.plugin b{color:#c45a4f}.lane-label.sync b{color:#94a78f}.lane-label.qa b{color:#b59a76}.lane-label.dev b{color:#9b8771}.swim-cell{display:flex;align-items:stretch;padding:9px;background:rgba(25,23,21,.58)}.swim-cell:nth-child(even){background:rgba(30,27,24,.58)}.swim-task{position:relative;width:100%;padding:12px;border:1px solid #554832;border-left:3px solid #a58f5e;background:linear-gradient(145deg,#221e18,#171411)}.swim-task.p4{border-color:#51473c;border-left-color:#9b8771;background:linear-gradient(145deg,#211d19,#161412)}.swim-task.plugin{border-color:#59352f;border-left-color:#a83d32;background:linear-gradient(145deg,#251916,#171311)}.swim-task.sync{border-color:#43503f;border-left-color:#84947c;background:linear-gradient(145deg,#1c231b,#141612)}.swim-task.qa{border-color:#5c4b36;border-left-color:#b39255;background:linear-gradient(145deg,#251f17,#171411)}.swim-task.dev{border-color:#51473c;border-left-color:#9b8771;background:linear-gradient(145deg,#211d19,#161412)}.swim-task small{color:#aa8f5b;font-family:Garamond,Georgia,serif;font-size:10px;font-weight:800;letter-spacing:.07em}.swim-task b{display:block;margin:4px 0;color:#d5ccbd;font-family:var(--display-font);font-size:13px}.swim-task p{color:#9d978e;font-size:10.5px;line-height:1.6}.swim-empty{background:repeating-linear-gradient(135deg,transparent 0 9px,rgba(255,255,255,.008) 10px,transparent 11px)}
+    .feature{margin-top:14px;padding:21px;border:1px solid #403a33;border-radius:2px;background:linear-gradient(145deg,#1c1917,#121110)}.feature-head{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:start}.fid{display:grid;place-items:center;width:44px;height:44px;border:1px solid #705d3e;border-radius:2px;background:#0d0c0b;color:#baa06c;font-family:Garamond,Georgia,serif;font-size:11px;font-weight:900}.feature-title p{color:#99938a;font-size:12px}.feature-body{display:grid;grid-template-columns:1.15fr .85fr;gap:13px;margin-top:14px}.rule{padding:15px;border:1px solid #38332e;border-radius:2px;background:#161412}.rule p,.rule li{color:#a29c94;font-size:11.5px}.rule ol,.rule ul{margin:7px 0 0;padding-left:18px}.accept{padding:15px;border:1px solid #465442;border-left:3px solid #84947c;border-radius:2px;background:#192019}.accept b{color:#9caf96;font-size:11px}.accept ul{margin:7px 0 0;padding-left:18px;color:#a8b2a4;font-size:11.5px}
+    .states{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:5px 2px 10px}.state{flex:0 0 auto;padding:8px 11px;border:1px solid #4b443b;border-radius:2px;background:#23201d;color:#aaa39a;font-size:11px;font-weight:850}.state.primary{border-color:#8b754f;color:#c2a66f}.state.good{border-color:#5f745b;color:#9daf98}.state.warn{border-color:#8b6b3f;color:#c19b5d}.state.end{border-color:#833d35;background:#2a1715;color:#d3b9b4}.state-arrow{color:#6f6250;font-weight:900}
+    .risk{border-left:3px solid var(--amber)}.out{opacity:.94}.out h3{color:#c6b9a7}.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check{padding:11px 13px;border:1px solid #38342f;border-radius:2px;background:#171513;color:#a9a39a;font-size:11.5px}.check::before{content:"✓";margin-right:8px;color:#93a88d;font-weight:900}
+    footer{padding:26px 0 94px;border-top:1px solid #332d27;background:#050505;color:#77736e;font-size:10.5px}.edit-tools{position:fixed;right:22px;bottom:22px;z-index:40;display:flex;align-items:center;gap:7px;padding:8px;border:1px solid #4b4339;border-radius:3px;background:rgba(18,16,14,.97);box-shadow:0 12px 34px rgba(0,0,0,.45);backdrop-filter:blur(10px)}.edit-tools button{padding:8px 11px;border:1px solid #4b4339;border-radius:2px;background:#1c1916;color:#aaa298;font-size:11px;font-weight:850;cursor:pointer}.edit-tools button:hover,.edit-tools button:focus-visible{border-color:#9a7f51;color:#c7a76a;outline:none}.edit-tools .primary{border-color:#806a46;background:#2b241b;color:#d0b77f}.edit-tools .primary:hover{background:#382d20;color:#dec796}.edit-tools .save{border-color:#6c8467;background:#253024;color:#b7c5b2}.edit-tools .save:hover{background:#30402f;color:#d4dfd0}.edit-tools .cancel[hidden],.edit-tools .save[hidden]{display:none}.edit-status{max-width:180px;padding:0 5px;color:#8f887f;font-size:10px;line-height:1.3}.is-editing [data-editable="true"]{border-radius:2px;outline:1px dashed rgba(199,167,106,.7);outline-offset:2px;cursor:text}.is-editing [data-editable="true"]:focus{outline:2px solid #b39255;background:#2b241b}.is-editing [data-editable="true"]:hover{background:rgba(165,143,94,.11)}
+    @media(max-width:960px){.hero-grid,.feature-body{grid-template-columns:1fr}.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.arch{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.grid-3{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){.wrap{width:min(100% - 22px,1240px)}header{padding:48px 0 40px}.panel{padding:20px}.section-head{grid-template-columns:1fr}.grid-2,.grid-3,.grid-4,.checklist,.term-list{grid-template-columns:1fr}.edit-tools{left:11px;right:11px;bottom:11px;overflow-x:auto}.edit-status{display:none}}
+    @media print{body{background:#fff!important;color:#222;font-size:11px}body::before{display:none}header{background:#171411!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}nav,.edit-tools,.filter-bar{display:none}.panel,.card,.arch-box,.feature,.swimlane,.swim-corner,.swim-stage,.lane-label,.swim-cell,.swim-task,.rule,.accept,.check{color:#222;background:#fff!important;border-color:#aaa;box-shadow:none}.panel{break-inside:avoid}.feature{break-inside:avoid}h2,h3,h4,td,td strong,.card p,.card li,.rule li,.accept li,.check,.swim-task p{color:#222!important}th{background:#eee!important;color:#222}main{padding-top:20px}.wrap{width:100%}footer{padding-bottom:24px;background:#fff;color:#555}}
+  </style>
+</head>
+<body class="">
+  <header>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="kicker"><br></p>
+        <h1>缺陷快捷反馈工具v1.0_PRD</h1>
+        <p class="hero-copy"><br></p>
+        <div class="meta"><span>版本 V0.1</span><span>状态：内部评审稿</span><span>日期：2026-08-23</span><span>范围：Windows PC 内部测试</span><span>接入平台：Jira + Perforce P4</span></div>
+      </div>
+      <aside class="decision"><small>本期核心决策</small><strong>不开发第二套缺陷管理平台；只解决现场信息难以完整带入 Jira 的问题。</strong><p>使用场景：QA测试、内部试玩和线下闭门试玩；<br>目标用户：试玩者、测试人员/QA、研发；<br><span style="background-color: rgb(43, 36, 27);">本期开发功能：缺陷快捷提交入口、证据自动采集和 Jira&nbsp;</span><span style="background-color: rgb(43, 36, 27);">自动写入。</span></p></aside>
+    </div>
+  </header>
+
+  <div class="prelude"><div class="wrap"><details class="term-notes"><summary>什么是 Jira 和 Perforce P4？</summary><div class="term-list"><p><strong>Jira：</strong>Atlassian 提供的研发协作与问题跟踪系统，本项目用它管理正式缺陷工单、字段、流程、负责人、沟通和检索。</p><p><strong>Perforce P4：</strong>游戏研发中常用的版本管理系统，本项目用它管理代码与大型游戏资产，并通过 Stream 和 P4 Changelist 追踪版本变更。</p></div></details></div></div>
+
+  <nav aria-label="PRD 目录"><div class="wrap">
+    <div class="nav-index">索引</div>
+    <div class="nav-group"><a class="nav-major" href="#summary">产品定义</a><div class="nav-sub"><a href="#summary">需求摘要</a><a href="#goal">MVP 目标</a><a href="#roles">用户角色</a></div></div>
+    <div class="nav-group"><a class="nav-major" href="#boundary">系统方案</a><div class="nav-sub"><a href="#boundary">系统分工</a><a href="#flow">主流程</a><a href="#reuse">功能来源</a></div></div>
+    <div class="nav-group"><a class="nav-major" href="#features">功能设计</a><div class="nav-sub"><a href="#features">功能需求</a><a href="#jira">Jira 配置</a></div></div>
+    <div class="nav-group"><a class="nav-major" href="#rules">规则与验收</a><div class="nav-sub"><a href="#rules">规则、异常与安全</a><a href="#metrics">指标与验收</a></div></div>
+  </div></nav>
+
+  <main class="wrap">
+    <section class="panel" id="summary">
+      <div class="section-head"><div class="no">01</div><div><h2>需求摘要</h2><p class="lead"><br></p></div></div>
+      <details class="term-notes"><summary>概念解释</summary><div class="term-list"><p><strong>Build ID：</strong>构建系统为每个可运行测试包生成的唯一版本标识，用于确认问题出现在哪个游戏版本。</p><p><strong>P4 Changelist：</strong>Perforce 为一次代码或资源变更生成的唯一提交编号。</p></div></details>
+      <div class="grid-4">
+        <article class="card"><span class="tag red">问题</span><h3>缺陷现场信息不完整</h3><p>试玩者手动建 Jira 单，容易漏填构建、场景、坐标和日志；QA 反复追问，研发仍难复现。</p></article>
+        <article class="card"><span class="tag green">功能设计</span><h3>游戏内 60 秒完成提交</h3><p>按快捷键打开提交窗口；系统自动读取版本与运行环境，附上截图和日志，并创建字段完整的 Jira Bug。</p></article>
+        <article class="card"><span class="tag">系统原则</span><h3>原始提交留档，工单统一在 Jira 处理</h3><p>系统保存原始提交和同步记录，用于失败重试与问题排查；状态、负责人、评论、修复和回归只在 Jira 中维护。</p></article>
+        <article class="card"><span class="tag amber">MVP 范围</span><h3>帮助研发收集完整现场信息，以便复现问题</h3><p>本期不做 AI 分诊、相似缺陷推荐、崩溃归类、短视频录制和完整测试用例管理。</p></article>
+      </div>
+      <div class="callout"><strong>一句话描述：</strong>试玩者发现问题后无需退出游戏，通过快捷方式快速提交带有 Build ID、P4 Changelist、场景、坐标、截图、日志和复现描述的缺陷反馈；QA 可直接在 Jira 完成分诊，研发可据此开始复现。</div>
+    </section>
+
+    <section class="panel" id="goal">
+      <div class="section-head"><div class="no">02</div><div><h2>产品MVP目标</h2><p class="lead">本期优先提高首次提交的信息质量和送达可靠性；缺陷管理、版本追踪与后续协作继续复用现有系统。</p></div></div>
+      <div class="scope-stack">
+        <article class="card"><h3>本期价值取舍</h3><ul><li><strong>缩短提交路径：</strong>试玩者无需退出游戏，在 Windows 测试版本内完成缺陷填写与提交。</li><li><strong>提高首次信息质量：</strong>自动带入版本、场景、设备、截图、日志和轻量性能快照，减少 QA 补问与研发复现准备时间。</li><li><strong>保证可靠送达：</strong>保存可追溯的原始提交；断网或 Jira 暂时不可用时允许重试，并通过 Submission ID 避免重复建单。</li><li><strong>保留补充闭环：</strong>对信息仍不完整或暂时无法复现的缺陷，QA 或研发在 Jira 中标记“待补充信息”并写明缺失项；试玩者在原工单中补充后继续处理，不重新建单。</li><li><strong>不重复建设现有能力：</strong>本期不开发第二套缺陷管理后台；状态、负责人、评论、通知、修复与回归保留在 Jira，版本追踪保留在 P4 和构建系统。</li></ul></article>
+        <details class="card out future-plan"><summary>未来可能规划（本期明确不做）</summary><p>后续版本继续以内部研发提效为优先，并按建设方向归类；各方向内 P0 优先验证，P1 根据 MVP 数据和实际问题量决定是否建设。</p><div class="table-wrap roadmap-table"><table>
+          <thead><tr><th>需求名</th><th>优先级</th><th>解释</th><th>价值</th></tr></thead>
+          <tbody>
+            <tr class="roadmap-group"><td colspan="4">智能分析与自动归类<small>减少 QA 分诊和研发定位成本</small></td></tr>
+            <tr><td><strong>AI 辅助分诊</strong></td><td><span class="priority">P0</span></td><td>根据缺陷描述和现场证据，建议严重度、优先级、Component、Assignee 及可能的重复工单，由 QA 确认后写入 Jira。</td><td>减少 QA 检索、定级和分派时间。</td></tr>
+            <tr><td><strong>AI 辅助缺陷定位</strong></td><td><span class="priority">P0</span></td><td>汇总日志、性能数据、版本信息和相似历史缺陷，给出可能相关的模块、异常时间点和排查线索，并附上对应证据。</td><td>缩小研发排查范围，减少人工查找和整理证据的时间。</td></tr>
+            <tr><td><strong>崩溃自动归类与聚合</strong></td><td><span class="priority">P0</span></td><td>按调用栈指纹和 Build 聚合同源崩溃，并关联已有 Jira 工单。</td><td>减少重复工单，优先识别影响范围较大的崩溃。</td></tr>
+            <tr class="roadmap-group"><td colspan="4">现场证据增强<small>帮助研发还原短暂、复杂或性能类问题</small></td></tr>
+            <tr><td><strong>滚动录屏与问题时间段回忆</strong></td><td><span class="priority">P0</span></td><td>保留最近 30 分钟画面；根据用户填写的大致发生时间和持续时长，截取对应录像并对齐日志。</td><td>快速定位短暂、难复现的问题现场。</td></tr>
+            <tr><td><strong>性能问题专用曲线</strong></td><td><span class="priority p1">P1</span></td><td>仅为性能问题上传前后的 FPS、帧时间、CPU/GPU、内存和显存曲线。</td><td>定位性能尖峰，同时避免全量采集开销。</td></tr>
+            <tr><td><strong>诊断存档与问题状态快照</strong></td><td><span class="priority p1">P1</span></td><td>按模块保存复现所需状态，不默认上传完整存档。</td><td>还原复杂现场，并控制兼容性、体积和敏感数据风险。</td></tr>
+            <tr class="roadmap-group"><td colspan="4">修复与回归闭环<small>连接 Jira、P4 和构建系统</small></td></tr>
+            <tr><td><strong>修复 P4 Changelist、构建与回归自动关联</strong></td><td><span class="priority">P0</span></td><td>识别 P4 提交中的 Jira Key、回写修复 P4 Changelist，并在该 Changelist 进入测试构建后通知 QA。</td><td>减少手工填写和查找验证版本的时间。</td></tr>
+            <tr class="roadmap-group"><td colspan="4">证据存储治理<small>控制 Jira 容量并支持长期追溯</small></td></tr>
+            <tr><td><strong>长期附件库</strong></td><td><span class="priority p1">P1</span></td><td>大型附件保存到内部对象存储，Jira 只保留受权限控制的链接。</td><td>控制 Jira 容量，并支持长期追溯。</td></tr>
+          </tbody>
+        </table></div><div class="roadmap-note">近期不规划：重复建设 Jira 管理端、外部反馈入口，以及单机研发收益有限的网络抓包。</div></details>
+      </div>
+    </section>
+
+    <section class="panel" id="roles">
+      <div class="section-head"><div class="no">03</div><div><h2>用户角色与职责</h2><p class="lead">权限以 Jira 项目角色为准；提交端只暴露当前角色需要的操作。</p></div></div>
+      <div class="grid-4">
+        <article class="card"><span class="tag">试玩者</span><h3>发现并提交问题</h3><p>填写问题现象和复现信息；查看提交结果；按 QA 要求补充信息。无权设置最终严重度、优先级和负责人。</p></article>
+        <article class="card"><span class="tag green">QA</span><h3>校验与分诊</h3><p>确认问题有效性；修正分类、严重度和优先级；分配责任组；发起补充；验证修复并关闭。</p></article>
+        <article class="card"><span class="tag amber">研发</span><h3>复现与修复</h3><p>查看证据；记录复现结果和修复说明；填写目标修复版本及修复 P4 Changelist；提交 QA 回归。</p></article>
+        <article class="card"><span class="tag red">管理员</span><h3>维护配置与可用性</h3><p>维护 Jira 字段、工作流、权限和系统账号；维护客户端配置；处理同步失败和访问授权。</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="boundary">
+      <div class="section-head"><div class="no">04</div><div><h2>系统分工与数据流</h2><p class="lead">客户端不保存 Jira 管理凭证，也不直接连接 P4 服务器。</p></div></div>
+      <details class="term-notes"><summary>概念解释</summary><div class="term-list"><p><strong>CI：</strong>Continuous Integration（持续集成），在本文中指检测 P4 变更、自动编译并生成测试包的构建流水线。</p><p><strong>P4 Stream：</strong>Perforce 中用于组织开发分支并规定代码与资源合并方向的分支管理机制。</p></div></details>
+      <div class="arch">
+        <article class="arch-box p4"><span class="owner p4">P4 / 构建系统</span><h3 style="margin-top:9px">提供准确的版本信息</h3><ul><li>持续集成（CI）构建流水线将 Build ID、P4 Stream、P4 Changelist、平台和构建时间写入只读清单。</li><li>客户端读取清单，不连接 P4 服务器。</li></ul></article>
+        <div class="arrow">→</div>
+        <article class="arch-box self"><span class="owner self">自行研发</span><h3 style="margin-top:9px">采集、留档与同步</h3><ul><li>UE5 插件生成 Submission ID，保存表单、现场证据和本地草稿。</li><li>同步服务保存原始提交，完成身份校验、字段转换和 Jira 写入。</li></ul><div class="submission-note"><span class="term-badge">本系统定义</span><strong>Submission ID：</strong>本系统为每次原始提交生成的唯一编号，用于关联原始数据、同步记录和后续创建的 Jira 工单。</div></article>
+        <div class="arrow">→</div>
+        <article class="arch-box jira"><span class="owner jira">Jira</span><h3 style="margin-top:9px">保存缺陷和处理记录</h3><ul><li>保存工单、字段、附件和操作历史。</li><li>支持分诊、修复、回归、权限、通知和检索。</li></ul></article>
+      </div>
+      <div class="callout warn"><strong>记录规则：</strong>Submission ID 标识原始提交，Jira Bug Key 标识正式工单。原始记录保存用户填写内容、自动采集信息、附件、同步状态和 Jira Bug Key，但不复制 Jira 的负责人、状态、评论、修复和回归记录。</div>
+    </section>
+
+    <section class="panel" id="flow">
+      <div class="section-head"><div class="no">05</div><div><h2>MVP 主流程</h2><p class="lead">从测试包准备到缺陷关闭，只使用一张 Jira Bug，不手动复制工单；STEP 00 是每个测试包的流程前置。</p></div></div>
+      <details class="term-notes"><summary>概念解释</summary><div class="term-list"><p><strong>Component：</strong>Jira 中表示缺陷所属功能模块或责任范围的分类字段。</p><p><strong>Assignee：</strong>Jira Issue 当前的处理负责人，即下一步需要推进该工单的人。</p></div></details>
+      <div class="swimlane-shell"><div class="swimlane" role="table" aria-label="MVP 缺陷反馈泳道图">
+        <div class="swim-head" role="row"><div class="swim-corner" role="columnheader">角色 / 阶段</div><div class="swim-stage" role="columnheader"><small>STEP 00</small><b>测试包准备</b></div><div class="swim-stage" role="columnheader"><small>STEP 01</small><b>发现问题</b></div><div class="swim-stage" role="columnheader"><small>STEP 02</small><b>采集现场</b></div><div class="swim-stage" role="columnheader"><small>STEP 03</small><b>填写提交</b></div><div class="swim-stage" role="columnheader"><small>STEP 04</small><b>留档建单</b></div><div class="swim-stage" role="columnheader"><small>STEP 05</small><b>QA 定级</b></div><div class="swim-stage" role="columnheader"><small>STEP 06</small><b>QA 分派</b></div><div class="swim-stage" role="columnheader"><small>STEP 07</small><b>研发复现</b></div><div class="swim-stage" role="columnheader"><small>STEP 08</small><b>研发修复</b></div><div class="swim-stage" role="columnheader"><small>STEP 09</small><b>填写修复信息</b></div><div class="swim-stage" role="columnheader"><small>STEP 10</small><b>回归关闭</b></div></div>
+        <div class="lane-row" role="row"><div class="lane-label p4" role="rowheader"><b>P4 / 构建系统</b><small>流程前置：生成测试包</small></div><div class="swim-cell"><article class="swim-task p4"><small>00</small><b>生成测试包与版本清单</b><p>CI 检测 P4 变更并生成测试包，将 Build ID、P4 Stream、测试 P4 Changelist、平台和构建时间写入只读清单。</p></article></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div></div>
+        <div class="lane-row" role="row"><div class="lane-label tester" role="rowheader"><b>试玩者</b><small>发现并描述问题</small></div><div class="swim-cell swim-empty"></div><div class="swim-cell"><article class="swim-task"><small>01</small><b>发现问题并按 F8</b><p>触发缺陷反馈入口，保持当前游戏状态。</p></article></div><div class="swim-cell swim-empty"></div><div class="swim-cell"><article class="swim-task"><small>03</small><b>填写必要信息</b><p>填写标题、类型、实际与预期结果、复现步骤和频率，确认附件。</p></article></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div></div>
+        <div class="lane-row" role="row"><div class="lane-label plugin" role="rowheader"><b>游戏内反馈插件</b><small>采集与提交前检查</small></div><div class="swim-cell swim-empty"></div><div class="swim-cell"><article class="swim-task plugin"><small>01</small><b>先截图，再打开窗口</b><p>截取当前游戏画面，随后显示反馈窗口。</p></article></div><div class="swim-cell"><article class="swim-task plugin"><small>02</small><b>自动读取现场</b><p>读取 Build、P4 Changelist、场景、坐标和设备，截取并压缩日志。</p></article></div><div class="swim-cell"><article class="swim-task plugin"><small>03</small><b>检查字段与附件</b><p>一次列出缺失项；通过后生成 Submission ID 并提交。</p></article></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div></div>
+        <div class="lane-row" role="row"><div class="lane-label sync" role="rowheader"><b>同步服务</b><small>留档并连接 Jira</small></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell"><article class="swim-task sync"><small>04</small><b>保存原始提交并建单</b><p>先留档，再创建 Jira Issue、上传附件，记录并返回 Bug Key。</p></article></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div></div>
+        <div class="lane-row" role="row"><div class="lane-label qa" role="rowheader"><b>QA（Jira）</b><small>分诊与回归</small></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell"><article class="swim-task qa"><small>05</small><b>确认有效性并定级</b><p>检查证据，设置问题类型、严重度和优先级；信息不足则转“待补充”。</p></article></div><div class="swim-cell"><article class="swim-task qa"><small>06</small><b>分派责任模块</b><p>设置 Component 与 Assignee，将工单转入“待处理”。</p></article></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell"><article class="swim-task qa"><small>10</small><b>回归并关闭</b><p>在修复版本验证；通过后关闭，失败则重新打开并记录原因。</p></article></div></div>
+        <div class="lane-row" role="row"><div class="lane-label dev" role="rowheader"><b>研发（Jira / P4）</b><small>复现与修复</small></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell swim-empty"></div><div class="swim-cell"><article class="swim-task dev"><small>07</small><b>复现问题</b><p>按原始证据复现，记录复现结果；无法复现时说明尝试条件。</p></article></div><div class="swim-cell"><article class="swim-task dev"><small>08</small><b>完成修复</b><p>修改代码或资产并完成必要自测，提交 P4 Changelist。</p></article></div><div class="swim-cell"><article class="swim-task dev"><small>09</small><b>填写修复信息</b><p>在 Jira 填写修复 P4 Changelist、修复版本和说明，转入“待回归”。</p></article></div><div class="swim-cell swim-empty"></div></div>
+      </div></div>
+    </section>
+
+    <section class="panel" id="reuse">
+      <div class="section-head"><div class="no">06</div><div><h2>功能来源与开发范围</h2><p class="lead">下表明确哪些功能直接使用 Jira、P4 或开源组件，哪些功能需要团队开发。</p></div></div>
+      <details class="term-notes"><summary>概念解释</summary><div class="term-list"><p><strong>SQLite：</strong>无需独立数据库服务、将结构化数据保存在本地文件中的轻量关系型数据库，本期用于暂存未同步草稿。</p><p><strong>zlib：</strong>常用的数据压缩库，本期用于减小文本日志体积并生成便于上传的压缩附件。</p><p><strong>Watcher：</strong>关注某条 Jira Issue 并接收其更新通知、但不一定负责处理该问题的用户。</p><p><strong>Automation：</strong>Jira 根据预设的触发条件和判断规则自动执行分派、通知或字段更新等动作的能力。</p><p><strong>JQL：</strong>Jira Query Language 的缩写，是按项目、状态、负责人等条件查询和筛选 Issue 的查询语言。</p><p><strong>Dashboard：</strong>Jira 使用筛选结果和统计组件集中展示缺陷数量、状态及趋势的数据看板。</p><p><strong>REST API：</strong>供同步服务以程序方式创建 Jira Issue、填写字段和上传附件的标准接口。</p><p><strong>Webhook：</strong>Jira 在指定事件发生时主动向外部系统发送通知数据的回调机制。</p></div></details>
+      <div class="filter-bar" role="group" aria-label="按功能来源筛选"><button class="filter-btn active" data-filter="all">全部</button><button class="filter-btn" data-filter="jira">Jira 原生/配置</button><button class="filter-btn" data-filter="p4">P4 / 既有构建能力</button><button class="filter-btn" data-filter="oss">开源组件</button><button class="filter-btn" data-filter="self">自行研发</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>功能</th><th>由谁提供</th><th>具体做法</th><th>本期结果</th></tr></thead>
+        <tbody>
+          <tr data-owner="jira"><td><strong>工单、字段、状态与权限</strong></td><td><span class="owner jira">Jira</span></td><td>配置 Game Bug 类型、自定义字段、工作流和项目角色。</td><td>所有缺陷统一记录在 Jira。</td></tr>
+          <tr data-owner="jira"><td><strong>协作、通知与检索</strong></td><td><span class="owner jira">Jira</span></td><td>使用评论、附件、Watcher、Automation、JQL 和 Dashboard。</td><td>不建设独立管理端。</td></tr>
+          <tr data-owner="jira"><td><strong>连接 Jira</strong></td><td><span class="owner jira">Jira</span></td><td>REST API 创建 Issue、上传附件；Webhook/Automation 触发通知。</td><td>同步服务不直接操作 Jira 数据库。</td></tr>
+          <tr data-owner="p4"><td><strong>版本与资产历史</strong></td><td><span class="owner p4">P4</span></td><td>P4 管理代码与资产；Jira 记录测试 P4 Changelist 与修复 P4 Changelist。</td><td>Bug 可追溯到对应版本。</td></tr>
+          <tr data-owner="p4"><td><strong>测试包版本清单</strong></td><td><span class="owner build">构建系统</span></td><td>构建系统在生成测试包时写入 <code>build_manifest.json</code>。</td><td>提交端自动获得 Build ID 与 P4 Changelist。</td></tr>
+          <tr data-owner="oss"><td><strong>本地草稿</strong></td><td><span class="owner oss">SQLite</span></td><td>保存最多 20 条未同步草稿；同步成功即删除。</td><td>短时故障不丢报告。</td></tr>
+          <tr data-owner="oss"><td><strong>日志压缩</strong></td><td><span class="owner oss">zlib</span></td><td>日志截取并压缩为 ZIP，单包不超过 20 MB。</td><td>附件可直接上传 Jira。</td></tr>
+          <tr data-owner="self"><td><strong>游戏内反馈插件</strong></td><td><span class="owner self">自行研发</span></td><td>UE5 内按 F8 打开表单，采集元数据、截图和日志。</td><td>试玩者不退出游戏即可提交。</td></tr>
+          <tr data-owner="self"><td><strong>提交前校验</strong></td><td><span class="owner self">自行研发</span></td><td>检查必填字段、自动采集结果与附件状态。</td><td>现场阻止无效报告。</td></tr>
+          <tr data-owner="self"><td><strong>原始提交记录</strong></td><td><span class="owner self">自行研发</span></td><td>按 Submission ID 保存原始字段、附件、同步状态、失败原因和 Jira Key，保留 30 天。</td><td>支持失败重试和同步问题排查。</td></tr>
+          <tr data-owner="self"><td><strong>Jira 同步服务</strong></td><td><span class="owner self">自行研发</span></td><td>校验身份、保存原始提交、映射字段、上传附件并返回 Jira Key。</td><td>客户端不保存 Jira 系统凭证。</td></tr>
+          <tr data-owner="self"><td><strong>配置下发</strong></td><td><span class="owner self">自行研发</span></td><td>服务端下发项目 Key、选项、附件上限和 Jira 字段映射版本。</td><td>字段变化无需重新打包。</td></tr>
+        </tbody>
+      </table></div>
+      <details class="term-notes manifest-note"><summary>build_manifest.json 示例</summary><p>构建系统在生成测试包时同步写入以下只读清单，反馈插件通过它读取准确的版本信息。</p><pre class="manifest-example"><code>{
+  "build_id": "ZK-Win64-Dev-2417",
+  "p4_stream": "//ZK/dev",
+  "p4_cl": 583421,
+  "platform": "Win64",
+  "build_time": "2026-08-23T14:30:00+08:00",
+  "engine_version": "UE5"
+}</code></pre></details>
+      <div class="callout"><strong>开源使用原则：</strong>本期只使用 SQLite 和 zlib 两个用途明确的基础组件，不额外引入新平台。组件版本、许可证和安全扫描由研发在开发评审中确认。</div>
+    </section>
+
+    <section class="panel" id="features">
+      <div class="section-head"><div class="no">07</div><div><h2>MVP 功能需求</h2><p class="lead">以下五项功能需要本期开发或连接；Jira 内的处理规则见第 08 节。</p></div></div>
+
+      <article class="feature"><div class="feature-head"><div class="fid">F01</div><div class="feature-title"><h3>缺陷反馈窗口</h3><p>Windows 测试版本内按 F8 打开；不要求试玩者离开游戏。</p></div><span class="owner self">自行研发</span></div><div class="feature-body"><div class="rule"><h4>交互与规则</h4><ol><li>按 F8 后 1 秒内显示窗口，默认截取当前画面。</li><li>表单包含：标题、问题类型、实际结果、预期结果、复现步骤、发生频率。</li><li>自动字段只读展示：Build ID、P4 Changelist、场景、坐标、平台和设备摘要。</li><li>点击取消时保留当前输入 10 分钟；再次打开继续编辑。</li><li>提交期间显示各阶段状态：校验、上传附件、创建工单、完成。</li></ol></div><div class="accept"><b>验收标准</b><ul><li>窗口打开 P95 ≤ 1 秒。</li><li>所有手动必填字段为空时均不能提交，并在字段下方给出原因。</li><li>提交成功展示 Jira Bug Key 和“复制编号”按钮。</li></ul></div></div></article>
+
+      <article class="feature"><div class="feature-head"><div class="fid">F02</div><div class="feature-title"><h3>现场信息自动采集</h3><p>只采集复现最需要、且能稳定获得的信息。</p></div><span class="owner self">自行研发</span></div><div class="feature-body"><div class="rule"><h4>自动字段</h4><ul><li>构建：Build ID、P4 Stream、测试 P4 Changelist、构建时间、引擎版本。</li><li>运行：地图/关卡名、世界坐标、游戏语言、分辨率、画质档位。</li><li>设备：操作系统、CPU、GPU、显存、内存、显卡驱动。</li><li>性能快照：提交时的 FPS、游戏线程/渲染线程帧时间、内存和显存占用；本期不持续采集性能曲线。</li><li>证据：当前截图 1 张、当前会话最近 5 分钟或最多 20 MB 的日志。</li><li>每个自动字段记录采集状态；失败时显示“未采集”及原因。</li></ul></div><div class="accept"><b>验收标准</b><ul><li>Build ID 与测试包构建记录一致。</li><li>截图可正常打开，日志可解压且时间覆盖提交前 5 分钟。</li><li>性能快照可读取；采集失败不阻止提交，并显示失败原因。</li><li>单项采集失败不阻止保存本地草稿，但 Build ID 缺失时禁止正式提交。</li></ul></div></div></article>
+
+      <article class="feature"><div class="feature-head"><div class="fid">F03</div><div class="feature-title"><h3>提交前检查</h3><p>在问题发生现场发现缺失信息，避免不完整的报告进入 Jira。</p></div><span class="owner self">自行研发</span></div><div class="feature-body"><div class="rule"><h4>检查规则</h4><ul><li>标题 8–80 字，格式建议“场景 + 操作 + 异常现象”。</li><li>实际结果、预期结果各不少于 10 字。</li><li>复现步骤至少 1 步，每步独立输入，允许排序。</li><li>发生频率单选：首次、偶发、经常、必现。</li><li>画面/UI/动画类问题必须有截图；当前截图默认满足。</li><li>附件总大小不得超过 Jira 当前配置上限；MVP 产品上限取 25 MB。</li></ul></div><div class="accept"><b>验收标准</b><ul><li>一次列出全部错误，不让用户反复点击提交后才逐项发现。</li><li>错误提示指出具体字段和修改方法。</li><li>检查规则由服务端统一保存和更新，客户端读取最新版本。</li></ul></div></div></article>
+
+      <article class="feature"><div class="feature-head"><div class="fid">F04</div><div class="feature-title"><h3>保存原始提交并创建 Jira 工单</h3><p>客户端必须通过同步服务提交；服务端先留档，再写入 Jira。</p></div><span class="owner self">自行研发 + Jira API</span></div><div class="feature-body"><div class="rule"><h4>处理规则</h4><ol><li>使用公司 SSO 身份获取临时登录凭证。</li><li>服务端检查项目、字段和附件大小，以 Submission ID 保存不可修改的原始提交。</li><li>按照字段映射创建 Game Bug，并上传截图和日志 ZIP。</li><li>将 Build ID、P4 Changelist、场景等信息写入对应字段，完整环境信息写入描述中的“环境信息”部分。</li><li>将 Jira Key、链接、创建时间和同步结果写回原始记录；工单尚未创建时不能提示成功。</li></ol></div><div class="accept"><b>验收标准</b><ul><li>可通过 Submission ID 查到原始内容、附件、同步记录和对应 Jira Key。</li><li>创建成功率 ≥ 99%，P95 ≤ 10 秒（25 MB 内附件）。</li><li>重复点击提交只创建一张工单；通过 Submission ID 保证幂等。</li><li>客户端和日志中不得出现 Jira 管理 Token。</li></ul></div></div></article>
+
+      <article class="feature"><div class="feature-head"><div class="fid">F05</div><div class="feature-title"><h3>失败重试与数据保留</h3><p>建议使用 SQLite 持久化未送达同步服务的提交，避免断网、超时或游戏退出导致反馈静默丢失；Jira 暂时不可用时由同步服务继续重试，并以 Submission ID 防止重复建单。</p></div><span class="owner self">自行研发 + SQLite</span></div><div class="feature-body"><div class="rule"><h4>处理规则</h4><ul><li>请求尚未到达同步服务时，客户端用 SQLite 保存字段和附件，最多保留 20 条。</li><li>同步服务接收成功后，保存原始提交并返回 Submission ID；Jira 暂时不可用时自动重试 3 次。</li><li>3 次仍失败则标记“同步失败”，由管理员手动重试；不得创建重复工单。</li><li>获得 Jira Key 后删除客户端草稿；服务端原始记录和附件保留 30 天后自动清理。</li><li>原始记录不可编辑；如需补充或更正，在 Jira 中操作并保留历史。</li></ul></div><div class="accept"><b>验收标准</b><ul><li>断网后关闭并重开游戏，客户端草稿仍存在。</li><li>同步服务已经接收、但 Jira 不可用时，无需客户端重新提交也能继续重试。</li><li>同一 Submission ID 始终只对应一张 Jira 工单。</li><li>到期记录和附件按日清理，并保留清理数量日志。</li></ul></div></div></article>
+
+    </section>
+
+    <section class="panel" id="jira">
+      <div class="section-head"><div class="no">08</div><div><h2>Jira 配置与字段映射</h2><p class="lead">新增一个 Game Bug Issue Type；不修改已有普通 Bug，以免影响其他项目。</p></div></div>
+      <details class="term-notes"><summary>概念解释</summary><div class="term-list"><p><strong>Description 固定区块：</strong>Jira 的描述（Description）字段中按统一模板划分的内容区域，用于分别写入实际结果、预期结果、复现步骤和环境信息。</p></div></details>
+      <h3>8.1 状态工作流</h3>
+      <div class="states"><span class="state primary">待分诊</span><span class="state-arrow">→</span><span class="state warn">待补充</span><span class="state-arrow">↩</span><span class="state">待处理</span><span class="state-arrow">→</span><span class="state">处理中</span><span class="state-arrow">→</span><span class="state good">待回归</span><span class="state-arrow">→</span><span class="state end">已关闭</span></div>
+      <div class="callout"><strong>状态控制：</strong>试玩者提交后固定进入“待分诊”；只有 QA 能执行分诊、退回补充和最终关闭；研发可在“待处理/处理中”之间流转，并在填写修复 P4 Changelist、修复版本和修复说明后提交“待回归”。</div>
+      <h3 style="margin-top:22px">8.2 字段表</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>字段</th><th>来源</th><th>必填阶段</th><th>类型/示例</th><th>写入方式</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Summary</strong></td><td>试玩者</td><td>提交</td><td>文本：观音禅院翻滚后角色卡入石阶</td><td>Jira 标准字段</td></tr>
+          <tr><td><strong>Issue Type</strong></td><td>系统</td><td>提交</td><td>固定：Game Bug</td><td>Jira 标准字段</td></tr>
+          <tr><td><strong>问题类型</strong></td><td>试玩者</td><td>提交</td><td>玩法/任务/战斗AI/碰撞/画面/UI/音频/性能/崩溃/其他</td><td>Jira 自定义单选</td></tr>
+          <tr><td><strong>实际结果</strong></td><td>试玩者</td><td>提交</td><td>多行文本</td><td>写入 Description 固定区块</td></tr>
+          <tr><td><strong>预期结果</strong></td><td>试玩者</td><td>提交</td><td>多行文本</td><td>写入 Description 固定区块</td></tr>
+          <tr><td><strong>复现步骤</strong></td><td>试玩者</td><td>提交</td><td>编号列表</td><td>写入 Description 固定区块</td></tr>
+          <tr><td><strong>发生频率</strong></td><td>试玩者</td><td>提交</td><td>首次/偶发/经常/必现</td><td>Jira 自定义单选</td></tr>
+          <tr><td><strong>Build ID</strong></td><td>构建清单</td><td>提交</td><td>ZK-Win64-Dev-2417</td><td>Jira 自定义文本，只读来源</td></tr>
+          <tr><td><strong>测试 P4 Changelist</strong></td><td>构建清单</td><td>提交</td><td>583421</td><td>Jira 自定义数字</td></tr>
+          <tr><td><strong>P4 Stream</strong></td><td>构建清单</td><td>提交</td><td>//ZK/dev</td><td>Jira 自定义文本</td></tr>
+          <tr><td><strong>场景/坐标</strong></td><td>客户端</td><td>提交</td><td>ZK_Map_02 / X:124 Y:88 Z:31</td><td>两个 Jira 自定义文本字段</td></tr>
+          <tr><td><strong>硬件环境</strong></td><td>客户端</td><td>提交</td><td>Win11 / RTX 4080 / Driver 590.xx</td><td>Description 环境区块</td></tr>
+          <tr><td><strong>严重度</strong></td><td>QA</td><td>离开待分诊</td><td>S0 阻塞/S1 严重/S2 一般/S3 轻微</td><td>Jira 自定义单选</td></tr>
+          <tr><td><strong>优先级</strong></td><td>QA</td><td>离开待分诊</td><td>P0/P1/P2/P3</td><td>Jira Priority</td></tr>
+          <tr><td><strong>责任模块/负责人</strong></td><td>QA</td><td>进入待处理</td><td>关卡/动画/客户端等 + Assignee</td><td>Component + Assignee</td></tr>
+          <tr><td><strong>修复 P4 Changelist</strong></td><td>研发</td><td>进入待回归</td><td>584109</td><td>Jira 自定义数字</td></tr>
+          <tr><td><strong>修复版本</strong></td><td>研发</td><td>进入待回归</td><td>ZK-Win64-Dev-2426</td><td>Fix Version</td></tr>
+          <tr><td><strong>附件</strong></td><td>客户端</td><td>提交</td><td>Screenshot.png、SessionLog.zip</td><td>Jira Attachment</td></tr>
+        </tbody>
+      </table></div>
+      <h3 style="margin-top:22px">8.3 严重度口径</h3>
+      <div class="grid-4">
+        <article class="card"><span class="tag red">S0 阻塞</span><h3>测试无法继续</h3><p>无法启动、必现崩溃、存档损坏、主流程完全阻断，且没有绕过方法。</p></article>
+        <article class="card"><span class="tag amber">S1 严重</span><h3>核心体验不可接受</h3><p>频繁崩溃、任务无法完成、战斗系统严重错误；存在代价较高的绕过方式。</p></article>
+        <article class="card"><span class="tag">S2 一般</span><h3>局部功能异常</h3><p>功能或表现不符合预期，但不阻断主要测试流程，能够稳定绕过。</p></article>
+        <article class="card"><span class="tag green">S3 轻微</span><h3>低影响表现问题</h3><p>错字、轻微穿模、短暂闪烁等，对玩法和流程基本无影响。</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="rules">
+      <div class="section-head"><div class="no">09</div><div><h2>关键规则、异常与安全要求</h2><p class="lead">明确失败时系统必须做什么，避免“酌情处理”成为实现缺口。</p></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>场景</th><th>系统处理</th><th>用户看到的结果</th><th>禁止行为</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Build 清单缺失</strong></td><td>停止正式提交，允许保存本地草稿；记录清单读取错误。</td><td>“无法识别当前测试版本，请重启正确测试包或联系构建负责人。”</td><td>不得使用“未知版本”创建 Jira Bug。</td></tr>
+          <tr><td><strong>截图失败</strong></td><td>允许重新截图；三次失败后可提交，但必须手动确认。</td><td>展示失败原因和“重新截图”。</td><td>不得显示附件成功但实际为空。</td></tr>
+          <tr><td><strong>日志超过 20 MB</strong></td><td>按时间从近到远截断，只保留提交前最近日志，并在描述中标记截断。</td><td>“日志已截取最近 5 分钟，共 18.4 MB。”</td><td>不得无限压缩或上传导致提交卡死。</td></tr>
+          <tr><td><strong>Jira API 超时</strong></td><td>保留原始提交；按 Submission ID 查询是否已建单，未建单才重试，最多自动重试 3 次。</td><td>“报告已保存，正在同步 Jira；无需重新提交。”</td><td>不得直接再次创建导致重复工单。</td></tr>
+          <tr><td><strong>附件上传失败</strong></td><td>不创建工单；原始提交标记“同步失败”，保留附件并提供管理员重试入口。</td><td>“报告已保存，附件同步失败，管理员将处理。”</td><td>不得先建空工单后丢失附件关联。</td></tr>
+          <tr><td><strong>SSO 身份过期</strong></td><td>暂停提交并拉起重新认证；表单与附件保留。</td><td>认证完成后继续原提交。</td><td>不得以共享账号或匿名用户建单。</td></tr>
+          <tr><td><strong>重复点击提交</strong></td><td>按钮立即锁定；服务端按 Submission ID 做幂等处理。</td><td>只返回同一个 Jira Bug Key。</td><td>不得创建多张相同工单。</td></tr>
+        </tbody>
+      </table></div>
+      <div class="grid-3" style="margin-top:14px">
+        <article class="card risk"><h3>凭证安全</h3><p>Jira 系统 Token 只存同步服务密钥系统；客户端使用短期用户凭证，日志不得打印 Token 和完整 Cookie。</p></article>
+        <article class="card risk"><h3>最小采集</h3><p>不采集私人文件、剪贴板、账号密码和与游戏无关的进程信息；采集字段在提交窗口中可见。</p></article>
+        <article class="card risk"><h3>访问控制</h3><p>缺陷附件继承 Jira 项目权限；测试项目默认仅项目成员可见，不生成外网可访问的附件链接。</p></article>
+      </div>
+      <div class="callout warn"><strong>数据保留：</strong>原始提交及附件默认保留 30 天，到期自动删除；Jira 工单和已上传附件按 Jira 项目规则保留。删除原始记录不影响 Jira 工单。</div>
+    </section>
+
+    <section class="panel" id="metrics">
+      <div class="section-head"><div class="no">10</div><div><h2>上线指标与整体验收</h2><p class="lead">MVP 是否继续扩展，以数据和访谈共同判断。</p></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>指标</th><th>定义</th><th>MVP 目标</th><th>数据来源</th><th>未达标处理</th></tr></thead>
+        <tbody>
+          <tr><td><strong>提交耗时</strong></td><td>打开窗口至获得 Jira Key 的时长中位数。</td><td class="yes">≤ 60 秒</td><td>客户端事件日志</td><td>拆分采集、填写和上传耗时，优化最长环节。</td></tr>
+          <tr><td><strong>核心字段完整率</strong></td><td>核心字段均非空且附件可读取的工单占比。</td><td class="yes">≥ 95%</td><td>Jira JQL + 附件检查</td><td>补强自动采集与提交前校验。</td></tr>
+          <tr><td><strong>同步成功率</strong></td><td>提交请求最终获得 Jira Key 的比例。</td><td class="yes">≥ 99%</td><td>同步服务日志</td><td>修复接口错误和重试幂等问题，暂不扩大灰度。</td></tr>
+          <tr><td><strong>信息不足退回率</strong></td><td>QA 转“待补充”且原因为信息不足的占比。</td><td class="yes">≤ 15%</td><td>Jira 状态与原因字段</td><td>分析前三类缺口，调整表单和自动采集。</td></tr>
+          <tr><td><strong>有效采用率</strong></td><td>灰度期间，通过插件提交的 Bug 占全部内部试玩 Bug 的比例。</td><td class="yes">≥ 70%</td><td>Jira Reporter Source 字段</td><td>询问未使用插件的试玩者，找出入口或流程问题。</td></tr>
+        </tbody>
+      </table></div>
+      <h3 style="margin-top:22px">发布前必须通过</h3>
+      <div class="checklist">
+        <div class="check">正常网络下完整提交，Jira 字段和附件全部正确。</div><div class="check">断网、超时、重试不产生重复 Jira 工单。</div>
+        <div class="check">错误测试包缺少 Build 清单时无法正式提交。</div><div class="check">普通试玩者不能修改严重度、优先级和负责人。</div>
+        <div class="check">研发未填修复 P4 Changelist 和修复版本时不能进入待回归。</div><div class="check">非 QA 用户不能关闭 Game Bug。</div>
+        <div class="check">客户端包和日志中不存在 Jira 管理 Token。</div><div class="check">25 MB 内附件提交 P95 不超过 10 秒。</div>
+        <div class="check">可通过 Submission ID 查询原始提交、同步记录和 Jira Key。</div><div class="check">原始提交到期后自动清理，且不影响 Jira 工单。</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer><div class="wrap">内部评审稿 · 本文基于“Perforce P4 管理版本与资产、Jira 管理任务与缺陷”的讨论前提。实际立项前需由研发、QA、项目管理与信息安全共同确认现有系统、字段及权限。</div></footer>
+
+  <div class="edit-tools" data-editor-ui="" role="toolbar" aria-label="文档编辑工具">
+    <span class="edit-status" data-editor-status="" aria-live="polite">点击“编辑文字”后可直接修改正文</span>
+    <button class="primary" type="button" data-edit-toggle="">编辑文字</button>
+    <button class="save" type="button" data-save="" hidden="">保存到 HTML</button>
+    <button class="cancel" type="button" data-cancel="" hidden="">取消修改</button>
+    <button type="button" onclick="window.print()">打印 / 导出 PDF</button>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll('.filter-btn');
+    const rows = document.querySelectorAll('#reuse tbody tr');
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        buttons.forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.filter;
+        rows.forEach((row) => {
+          const owner = row.dataset.owner;
+          const visible = filter === 'all' || owner === filter || (filter === 'p4' && owner === 'build');
+          row.classList.toggle('is-hidden', !visible);
+        });
+      });
+    });
+
+    const editToggle = document.querySelector('[data-edit-toggle]');
+    const saveButton = document.querySelector('[data-save]');
+    const cancelButton = document.querySelector('[data-cancel]');
+    const editStatus = document.querySelector('[data-editor-status]');
+    const excluded = '[data-editor-ui], script, style, button, code';
+    const editableElements = [...document.querySelectorAll('header *, nav a, main *, footer *')].filter((element) => {
+      if (element.matches(excluded) || element.closest('[data-editor-ui]')) return false;
+      return [...element.childNodes].some((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+    });
+    let editing = false;
+    let dirty = false;
+    let snapshot = [];
+
+    const setStatus = (message) => { editStatus.textContent = message; };
+
+    function startEditing() {
+      snapshot = editableElements.map((element) => [element, element.innerHTML]);
+      editableElements.forEach((element) => {
+        element.dataset.editable = 'true';
+        element.contentEditable = 'true';
+        element.spellcheck = false;
+      });
+      document.body.classList.add('is-editing');
+      editing = true;
+      dirty = false;
+      editToggle.textContent = '结束编辑';
+      saveButton.hidden = false;
+      cancelButton.hidden = false;
+      setStatus('编辑中：点击文字直接修改，完成后保存到 HTML');
+    }
+
+    function stopEditing() {
+      editableElements.forEach((element) => {
+        element.removeAttribute('contenteditable');
+        element.removeAttribute('spellcheck');
+        element.removeAttribute('data-editable');
+      });
+      document.body.classList.remove('is-editing');
+      editing = false;
+      editToggle.textContent = '编辑文字';
+      saveButton.hidden = true;
+      cancelButton.hidden = true;
+    }
+
+    function cleanDocumentForSave() {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('body').classList.remove('is-editing');
+      clone.querySelectorAll('[contenteditable], [spellcheck], [data-editable]').forEach((element) => {
+        element.removeAttribute('contenteditable');
+        element.removeAttribute('spellcheck');
+        element.removeAttribute('data-editable');
+      });
+      clone.querySelectorAll('#reuse tbody tr').forEach((row) => row.classList.remove('is-hidden'));
+      clone.querySelectorAll('.filter-btn').forEach((button, index) => button.classList.toggle('active', index === 0));
+      const clonedStatus = clone.querySelector('[data-editor-status]');
+      const clonedEdit = clone.querySelector('[data-edit-toggle]');
+      const clonedSave = clone.querySelector('[data-save]');
+      const clonedCancel = clone.querySelector('[data-cancel]');
+      clonedStatus.textContent = '点击“编辑文字”后可直接修改正文';
+      clonedEdit.textContent = '编辑文字';
+      clonedSave.hidden = true;
+      clonedCancel.hidden = true;
+      return '<!doctype html>\n' + clone.outerHTML;
+    }
+
+    async function saveDocument() {
+      const source = cleanDocumentForSave();
+      const currentName = decodeURIComponent(location.pathname.split('/').pop() || 'PRD.html');
+      try {
+        const endpoint = location.protocol === 'file:'
+          ? 'http://127.0.0.1:8765/__save_prd'
+          : '/__save_prd';
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/html;charset=utf-8' },
+          body: source
+        });
+        if (!response.ok) throw new Error('Local save failed');
+        dirty = false;
+        stopEditing();
+        setStatus('已更新原 HTML；刷新后仍会保留本次修改');
+      } catch (serverError) {
+        try {
+          if (!('showOpenFilePicker' in window)) throw serverError;
+          const [handle] = await window.showOpenFilePicker({
+            multiple: false,
+            types: [{ description: '请选择当前 PRD HTML', accept: { 'text/html': ['.html'] } }]
+          });
+          if (handle.name !== currentName) throw new Error('Wrong file selected');
+          const writable = await handle.createWritable();
+          await writable.write(source);
+          await writable.close();
+          dirty = false;
+          stopEditing();
+          setStatus('已更新原 HTML；刷新后仍会保留本次修改');
+        } catch (error) {
+          if (error.name !== 'AbortError') setStatus('未能更新原文件，请从本地编辑链接打开后重试');
+        }
+      }
+    }
+
+    editToggle.addEventListener('click', () => {
+      if (!editing) startEditing();
+      else if (dirty) setStatus('存在未保存修改，请点击“保存到 HTML”或“取消修改”');
+      else stopEditing();
+    });
+    document.querySelectorAll('nav a').forEach((link) => link.addEventListener('click', (event) => {
+      if (editing) event.preventDefault();
+    }));
+    editableElements.forEach((element) => element.addEventListener('input', () => {
+      dirty = true;
+      setStatus('有未保存修改');
+    }));
+    saveButton.addEventListener('click', saveDocument);
+    cancelButton.addEventListener('click', () => {
+      snapshot.forEach(([element, html]) => { element.innerHTML = html; });
+      dirty = false;
+      stopEditing();
+      setStatus('本次修改已取消');
+    });
+    window.addEventListener('beforeunload', (event) => {
+      if (!dirty) return;
+      event.preventDefault();
+      event.returnValue = '';
+    });
+    document.addEventListener('keydown', (event) => {
+      if (editing && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') {
+        event.preventDefault();
+        saveDocument();
+      }
+    });
+  </script>
+
+
+<div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div>
+
+
+
+</body></html>

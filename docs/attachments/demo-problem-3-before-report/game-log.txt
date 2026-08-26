@@ -1,0 +1,69 @@
+[2026.08.25-13.37.20:672][887]Slate.EnableGlobalInvalidation = "false"
+[2026.08.25-13.37.21:819][892]LogTexture: Error: Loading non-streamed mips from an external bulk file.  This is not desireable.  File /Game/00Main/Design/Tech/SkinnedDecal/Texture/Bruise/T_Scar_P_Croped
+[2026.08.25-13.37.21:839][892]LogNiagara: Error: Mismatch between binding between RapidIterationParamters and ScriptExecutionParameters for system NiagaraScript /Game/00Main/Design/Tech/FoliagePP/Niagara/NS_FoliagePP.NS_FoliagePP:NE_FoliagePP_2D_V2.NiagaraSimulationStageGeneric_346.SimulationStage_0
+[2026.08.25-13.37.21:839][892]LogNiagara: Error: Mismatch between binding between RapidIterationParamters and ScriptExecutionParameters for system NiagaraScript /Game/00Main/Design/Tech/FoliagePP/Niagara/NS_FoliagePP.NS_FoliagePP:NE_FoliagePP_2D_V2_LOW_2.NiagaraSimulationStageGeneric_346.SimulationStage_0
+[2026.08.25-13.37.21:840][892]LogNiagara: Error: Mismatch between binding between RapidIterationParamters and ScriptExecutionParameters for system NiagaraScript /Game/00Main/Design/Tech/VHMPOM/Niagara/NS_DSDF_interactland_data.NS_DSDF_interactland_data:NE_DSDF_interactland_data.NiagaraSimulationStageGeneric_18.SimulationStage_0
+[2026.08.25-13.37.32:258][895]GSEFuncLib: [SYSTEM_LOG:GSG]:Role Login Finish.
+[2026.08.25-13.37.32:259][895]GSEFuncLib: [SYSTEM_LOG:ONLINE_SUBSYSTEM]:Entitlement Refresh Finish:True
+[2026.08.25-13.37.32:259][895]GSEFuncLib: [SYSTEM_LOG:ONLINE_SUBSYSTEM]:Own Entitlement 0.
+[2026.08.25-13.37.35:618][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:9FBC0F9841BB72F53CD25A933128C734
+[2026.08.25-13.37.35:720][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:0
+[2026.08.25-13.37.35:730][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:7358FDE34E9AFDDB03EE81A7C9D03396
+[2026.08.25-13.37.35:738][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:7358FDE34E9AFDDB03EE81A7C9D03396
+[2026.08.25-13.37.35:753][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:0
+[2026.08.25-13.37.35:761][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:0
+[2026.08.25-13.37.35:769][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B1FFA4444DB3AD7479B68C82BAF28835
+[2026.08.25-13.37.35:772][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:CBA61D60442E20B4FF798BA6E0510C15
+[2026.08.25-13.37.35:799][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:None
+[2026.08.25-13.37.35:799][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:None
+[2026.08.25-13.37.35:912][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:9FBC0F9841BB72F53CD25A933128C734
+[2026.08.25-13.37.35:914][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B1FFA4444DB3AD7479B68C82BAF28835
+[2026.08.25-13.37.35:920][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:Normal
+[2026.08.25-13.37.36:235][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:2C0B238949F9F15B3195B49ECD967D84
+[2026.08.25-13.37.36:235][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:E86C82364F793328DBAA65BB79E18559
+[2026.08.25-13.37.36:593][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:St2
+[2026.08.25-13.37.36:593][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:St2
+[2026.08.25-13.37.36:593][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:St2
+[2026.08.25-13.37.36:593][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:St2
+[2026.08.25-13.37.36:593][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:St2
+[2026.08.25-13.37.36:723][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:74A179904137C887745C5E9F82B7ACBB
+[2026.08.25-13.37.36:723][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:F7975AF14F250EB2E4C00F8AA4D0EFDB
+[2026.08.25-13.37.37:318][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:319][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:320][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:321][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:323][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:324][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:324][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:325][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:327][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B01B089041D888EF38258EA7127AE9EE
+[2026.08.25-13.37.37:327][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:0122A68F4DDEEA02FAC0219EFD47EFB0
+[2026.08.25-13.37.37:328][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B01B089041D888EF38258EA7127AE9EE
+[2026.08.25-13.37.37:328][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B1841151458401954E8BC280D166AAF9
+[2026.08.25-13.37.37:330][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:331][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:331][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:332][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:334][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:335][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:336][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:337][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B6279BF64A96104FD20800962ECA78A3
+[2026.08.25-13.37.37:358][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:00B6A8CE4E263ADD657DE6A847E05348
+[2026.08.25-13.37.37:359][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:00B6A8CE4E263ADD657DE6A847E05348
+[2026.08.25-13.37.37:361][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:00B6A8CE4E263ADD657DE6A847E05348
+[2026.08.25-13.37.37:362][898]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:00B6A8CE4E263ADD657DE6A847E05348
+[2026.08.25-13.37.37:373][898]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:StDefault
+[2026.08.25-13.38.00:251][482]Slate.EnableGlobalInvalidation = "true"
+[2026.08.25-13.38.34:366][884]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:01623136485F4788D24A6083BC677293
+[2026.08.25-13.38.34:367][884]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:01623136485F4788D24A6083BC677293
+[2026.08.25-13.39.34:415][498]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:9FBC0F9841BB72F53CD25A933128C734
+[2026.08.25-13.39.34:491][498]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:0
+[2026.08.25-13.39.34:492][498]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:7358FDE34E9AFDDB03EE81A7C9D03396
+[2026.08.25-13.39.34:496][498]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:7358FDE34E9AFDDB03EE81A7C9D03396
+[2026.08.25-13.39.34:502][498]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:0
+[2026.08.25-13.39.34:507][498]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:0
+[2026.08.25-13.39.34:513][498]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:B1FFA4444DB3AD7479B68C82BAF28835
+[2026.08.25-13.39.34:515][498]LogGSAKB: Error: LevelSeq->LocateBoundObjects Failed FGuid:CBA61D60442E20B4FF798BA6E0510C15
+[2026.08.25-13.39.37:740][609]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:None
+[2026.08.25-13.39.37:741][609]LogGSAKB: Error: StateNameIndexMap.Contains Failed StateName:None
+[2026.08.25-13.40.03:368][612]LogWwiseResourceLoader: Error: CreateEventNode: Could not find language for Event None (0)

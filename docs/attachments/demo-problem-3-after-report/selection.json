@@ -1,0 +1,57 @@
+{
+  "schema_version": "0.1",
+  "submission_id": "SUB-5C28FDABAF00",
+  "session_id": "ec9d1b29-a9aa-4c3b-9932-1cb0b3c01d02",
+  "created_utc_ms": 1787670811697,
+  "selected_start_utc_ms": 1787670556102,
+  "selected_end_utc_ms": 1787670803102,
+  "selected_duration_ms": 247000,
+  "export_start_utc_ms": 1787670556053,
+  "export_end_utc_ms": 1787670811100,
+  "context_seconds": 15,
+  "clipped_to_session": true,
+  "demo_only_fields": true,
+  "synthetic_evidence": false,
+  "foreground_state_available": true,
+  "background_seconds_excluded": 98,
+  "background_ranges_utc_ms": [
+    {
+      "start_utc_ms": 1787670557000,
+      "end_utc_ms": 1787670561000
+    },
+    {
+      "start_utc_ms": 1787670563000,
+      "end_utc_ms": 1787670567000
+    },
+    {
+      "start_utc_ms": 1787670623000,
+      "end_utc_ms": 1787670624000
+    },
+    {
+      "start_utc_ms": 1787670626000,
+      "end_utc_ms": 1787670629000
+    },
+    {
+      "start_utc_ms": 1787670665000,
+      "end_utc_ms": 1787670667000
+    },
+    {
+      "start_utc_ms": 1787670671000,
+      "end_utc_ms": 1787670672000
+    },
+    {
+      "start_utc_ms": 1787670700000,
+      "end_utc_ms": 1787670702000
+    },
+    {
+      "start_utc_ms": 1787670704000,
+      "end_utc_ms": 1787670714000
+    },
+    {
+      "start_utc_ms": 1787670722000,
+      "end_utc_ms": 1787670793000
+    }
+  ],
+  "suspicious_frame_gap_count": 1,
+  "view_excludes_confirmed_background": true
+}

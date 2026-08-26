@@ -1,0 +1,78 @@
+{
+  "session_id": "ffbe55b9-da45-4cd6-9d6b-000e22678788",
+  "synthetic": false,
+  "sources": {
+    "game_log": {
+      "name": "game_log",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787665203769,
+      "details": {
+        "path": "%LOCALAPPDATA%\\b1\\Saved\\Logs\\b1.log",
+        "last_event_utc_ms": 1787665203368
+      },
+      "coverage": {
+        "start_utc_ms": 1787665040672,
+        "end_utc_ms": 1787665203368,
+        "sample_count": 69
+      }
+    },
+    "presentmon": {
+      "name": "presentmon",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787664874791,
+      "details": {
+        "version": "2.5.1",
+        "pid": 17876
+      },
+      "coverage": {
+        "start_utc_ms": 1787664987000,
+        "end_utc_ms": 1787665302000,
+        "sample_count": 1545
+      }
+    },
+    "process": {
+      "name": "process",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787664874764,
+      "details": {
+        "pid": 17876,
+        "name": "b1-Win64-Shipping.exe"
+      },
+      "coverage": {
+        "start_utc_ms": 1787664986789,
+        "end_utc_ms": 1787665305752,
+        "sample_count": 960
+      }
+    },
+    "process_gpu": {
+      "name": "process_gpu",
+      "status": "unavailable",
+      "reason": "OSError: PdhCollectQueryData=0x-7FFFF82B",
+      "updated_utc_ms": 1787664874769,
+      "details": {},
+      "coverage": {
+        "start_utc_ms": 1787664986789,
+        "end_utc_ms": 1787665305752,
+        "sample_count": 320
+      }
+    },
+    "vendor_gpu_supplement": {
+      "name": "vendor_gpu_supplement",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787664874931,
+      "details": {
+        "scope": "device",
+        "provider": "nvidia-smi"
+      },
+      "coverage": {
+        "start_utc_ms": 1787664988784,
+        "end_utc_ms": 1787665302751,
+        "sample_count": 290
+      }
+    }
+  }
+}

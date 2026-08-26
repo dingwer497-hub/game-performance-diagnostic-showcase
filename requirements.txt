@@ -1,0 +1,2 @@
+# Runtime dependency for process and host telemetry collection.
+psutil==7.2.2

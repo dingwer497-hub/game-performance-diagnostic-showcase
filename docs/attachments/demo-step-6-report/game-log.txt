@@ -1,0 +1,2 @@
+[2026.08.25-15.51.54:974][949]LogWwiseResourceLoader: Error: CreateEventNode: Could not find language for Event None (0)
+[2026.08.25-15.52.13:072][842]LogWwiseResourceLoader: Error: CreateEventNode: Could not find language for Event None (0)

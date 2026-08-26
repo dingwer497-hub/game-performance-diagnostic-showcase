@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1",
+  "submission_id": "SUB-6D7C0837A937",
+  "session_id": "de879c93-e652-4062-858a-5e3e8947b4f8",
+  "created_utc_ms": 1787673254798,
+  "selected_start_utc_ms": 1787673123707,
+  "selected_end_utc_ms": 1787673243707,
+  "selected_duration_ms": 120000,
+  "export_start_utc_ms": 1787673108707,
+  "export_end_utc_ms": 1787673254707,
+  "context_seconds": 15,
+  "clipped_to_session": true,
+  "demo_only_fields": true,
+  "synthetic_evidence": false,
+  "foreground_state_available": true,
+  "background_seconds_excluded": 0,
+  "background_ranges_utc_ms": [],
+  "suspicious_frame_gap_count": 0,
+  "view_excludes_confirmed_background": true
+}

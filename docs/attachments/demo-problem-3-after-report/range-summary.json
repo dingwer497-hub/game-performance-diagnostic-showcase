@@ -1,0 +1,126 @@
+{
+  "selected_start_utc_ms": 1787670556102,
+  "selected_end_utc_ms": 1787670803102,
+  "metrics": {
+    "app_fps": {
+      "count": 147,
+      "minimum": 2.276209915283291,
+      "maximum": 70.56693775966272,
+      "average": 41.11800080350618,
+      "p95": 64.86551432914139,
+      "unit": "fps"
+    },
+    "device_gpu_clock_mhz": {
+      "count": 28,
+      "minimum": 1290.0,
+      "maximum": 1995.0,
+      "average": 1949.4642857142858,
+      "p95": 1980.0,
+      "unit": "MHz"
+    },
+    "device_gpu_power_w": {
+      "count": 28,
+      "minimum": 51.53,
+      "maximum": 162.24,
+      "average": 112.50142857142858,
+      "p95": 143.55,
+      "unit": "watt"
+    },
+    "device_gpu_temperature_c": {
+      "count": 28,
+      "minimum": 52.0,
+      "maximum": 64.0,
+      "average": 59.25,
+      "p95": 63.0,
+      "unit": "celsius"
+    },
+    "device_gpu_util_pct": {
+      "count": 28,
+      "minimum": 24.0,
+      "maximum": 93.0,
+      "average": 65.67857142857143,
+      "p95": 93.0,
+      "unit": "percent"
+    },
+    "device_vram_used_mb": {
+      "count": 28,
+      "minimum": 4506.0,
+      "maximum": 5207.0,
+      "average": 4936.571428571428,
+      "p95": 5128.0,
+      "unit": "MiB"
+    },
+    "frame_time_avg_ms": {
+      "count": 147,
+      "minimum": 14.170942253521126,
+      "maximum": 439.326792,
+      "average": 30.466080913630805,
+      "p95": 53.84819473684211,
+      "unit": "ms"
+    },
+    "frame_time_p95_ms": {
+      "count": 147,
+      "minimum": 19.9367,
+      "maximum": 882.3307,
+      "average": 49.78830408163265,
+      "p95": 72.9672,
+      "unit": "ms"
+    },
+    "game_foreground": {
+      "count": 247,
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "average": 0.6032388663967612,
+      "p95": 1.0,
+      "unit": "boolean"
+    },
+    "gpu_busy_median_ms": {
+      "count": 147,
+      "minimum": 7.6234,
+      "maximum": 23.3365,
+      "average": 17.52001836734694,
+      "p95": 22.3074,
+      "unit": "ms"
+    },
+    "gpu_busy_p95_ms": {
+      "count": 147,
+      "minimum": 8.3649,
+      "maximum": 47.0002,
+      "average": 19.804549659863945,
+      "p95": 27.0788,
+      "unit": "ms"
+    },
+    "process_cpu_pct": {
+      "count": 149,
+      "minimum": 5.39,
+      "maximum": 66.545,
+      "average": 28.973355704697983,
+      "p95": 59.529999999999994,
+      "unit": "percent"
+    },
+    "process_cpu_pct_raw": {
+      "count": 149,
+      "minimum": 107.8,
+      "maximum": 1330.9,
+      "average": 579.4671140939598,
+      "p95": 1190.6,
+      "unit": "percent"
+    },
+    "process_gpu_pct": {
+      "count": 149,
+      "minimum": 2.4255259813580796,
+      "maximum": 96.73554991055802,
+      "average": 67.12418408566617,
+      "p95": 93.80894321394095,
+      "unit": "percent"
+    },
+    "process_memory_mb": {
+      "count": 149,
+      "minimum": 5875.703125,
+      "maximum": 8091.04296875,
+      "average": 7705.157796770134,
+      "p95": 7847.015625,
+      "unit": "MiB"
+    }
+  }
+}

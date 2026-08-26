@@ -1,0 +1,92 @@
+{
+  "session_id": "ec9d1b29-a9aa-4c3b-9932-1cb0b3c01d02",
+  "synthetic": false,
+  "sources": {
+    "game_log": {
+      "name": "game_log",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787670803123,
+      "details": {
+        "path": "%LOCALAPPDATA%\\b1\\Saved\\Logs\\b1.log",
+        "last_event_utc_ms": 1787670802305
+      },
+      "coverage": {
+        "start_utc_ms": 1787670556524,
+        "end_utc_ms": 1787670802305,
+        "sample_count": 113
+      }
+    },
+    "presentmon": {
+      "name": "presentmon",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787670557096,
+      "details": {
+        "version": "2.5.1",
+        "pid": 21916
+      },
+      "coverage": {
+        "start_utc_ms": 1787670559000,
+        "end_utc_ms": 1787670808000,
+        "sample_count": 1200
+      }
+    },
+    "process": {
+      "name": "process",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787670557065,
+      "details": {
+        "pid": 21916,
+        "name": "b1-Win64-Shipping.exe"
+      },
+      "coverage": {
+        "start_utc_ms": 1787670557098,
+        "end_utc_ms": 1787670811100,
+        "sample_count": 765
+      }
+    },
+    "process_gpu": {
+      "name": "process_gpu",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787670557070,
+      "details": {
+        "scope": "process",
+        "provider": "Windows PDH"
+      },
+      "coverage": {
+        "start_utc_ms": 1787670557098,
+        "end_utc_ms": 1787670811100,
+        "sample_count": 255
+      }
+    },
+    "vendor_gpu_supplement": {
+      "name": "vendor_gpu_supplement",
+      "status": "ok",
+      "reason": null,
+      "updated_utc_ms": 1787670557254,
+      "details": {
+        "scope": "device",
+        "provider": "nvidia-smi"
+      },
+      "coverage": {
+        "start_utc_ms": 1787670557098,
+        "end_utc_ms": 1787670807109,
+        "sample_count": 235
+      }
+    },
+    "win32_foreground": {
+      "name": "win32_foreground",
+      "status": "ok",
+      "reason": null,
+      "details": {},
+      "coverage": {
+        "start_utc_ms": 1787670557098,
+        "end_utc_ms": 1787670811100,
+        "sample_count": 255
+      }
+    }
+  }
+}

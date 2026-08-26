@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="游戏性能与日志追溯 Demo：Windows 便携版、产品文档、技术设计、诊断报告示例与完整源码。">
+  <title>游戏性能与日志追溯 Demo｜项目展示</title>
+  <style>
+    :root{--bg:#080706;--paper:#151310;--paper2:#1c1814;--ink:#e4ddd2;--muted:#aaa197;--line:#443a2e;--gold:#c6a665;--red:#a94a3e;--green:#8da187;--shadow:0 22px 70px rgba(0,0,0,.42);--serif:KaiTi,STKaiti,"Songti SC",serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;background:#050505}body{margin:0;color:var(--ink);font-family:var(--sans);line-height:1.72;background:radial-gradient(circle at 14% 4%,#2a2118 0,transparent 30%),radial-gradient(circle at 86% 12%,#1c1712 0,transparent 26%),linear-gradient(180deg,#0b0908,#050505 74%)}a{color:inherit}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}
+    header{position:relative;isolation:isolate;overflow:hidden;min-height:620px;display:grid;align-items:end;border-bottom:1px solid #5a4934;background:linear-gradient(90deg,rgba(5,5,5,.96),rgba(7,6,5,.76) 52%,rgba(5,5,5,.86)),url("assets/images/zhongkui-title-bg.jpg") center 52%/cover no-repeat}header::after{content:"";position:absolute;z-index:-1;inset:auto 0 0;height:3px;background:linear-gradient(90deg,transparent,var(--red),var(--gold),var(--red),transparent)}.hero{padding:88px 0 74px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase}.hero h1{max-width:950px;margin:14px 0 18px;font:600 clamp(46px,7vw,82px)/1.08 var(--serif);letter-spacing:.04em;text-shadow:0 4px 28px #000}.hero p{max-width:760px;margin:0;color:#c2bbb1;font-size:clamp(16px,2vw,20px)}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px;border:1px solid #725d3e;background:#17130f;color:#e6d9c3;font-weight:700;text-decoration:none}.button.primary{border-color:#a7844d;background:#4a3520}.button:hover{transform:translateY(-1px);border-color:var(--gold);background:#2c2117}.note{margin-top:14px;color:#918a81;font-size:12px}
+    nav{position:sticky;top:0;z-index:20;border-bottom:1px solid #362e26;background:rgba(7,6,5,.92);backdrop-filter:blur(14px)}nav .wrap{display:flex;gap:5px;overflow:auto;padding:8px 0}nav a{padding:7px 11px;color:#b9aa96;font-size:12px;text-decoration:none;white-space:nowrap}nav a:hover{background:#241d16;color:#e0cda9}
+    main{padding:54px 0 80px}section{scroll-margin-top:70px;margin-bottom:24px;padding:30px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(27,24,21,.98),rgba(15,14,13,.98));box-shadow:var(--shadow)}.section-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}.num{display:grid;place-items:center;width:44px;height:44px;border:1px solid #755f3f;color:var(--gold);font-size:12px}.section-head h2{margin:0;font:600 28px/1.2 var(--serif);letter-spacing:.05em}.section-head p{margin:3px 0 0;color:#958e85;font-size:13px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{padding:20px;border:1px solid #3f3831;background:linear-gradient(150deg,#211d19,#12110f)}.card h3{margin:0 0 8px;color:#dccfbc;font:600 18px var(--serif)}.card p,.card li{color:var(--muted);font-size:13px}.card ul{margin:8px 0 0;padding-left:18px}.tag{display:inline-block;margin-bottom:12px;padding:3px 8px;border:1px solid #785f3b;color:#c9a665;font-size:10px;font-weight:800}.card-link{display:block;height:100%;text-decoration:none}.card-link:hover{border-color:#92764a;background:linear-gradient(150deg,#2a2119,#17130f)}
+    .flow{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:10px;overflow:auto}.step{padding:16px;border:1px solid #40382f;border-top:3px solid #987b4d;background:#12100e}.step b{display:block;margin:5px 0;color:#d5c9b7;font:600 15px var(--serif)}.step small{color:var(--gold);font-size:10px}.step p{margin:0;color:#9f978d;font-size:11px}.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.shot{margin:0;border:1px solid #40382f;background:#0d0c0b}.shot img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.shot figcaption{padding:10px 12px;color:#c9bba6;font:600 13px var(--serif)}
+    .architecture{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.arch{padding:18px;border:1px solid #413930;background:#12110f}.arch strong{display:block;color:#d4c5b0;font:600 16px var(--serif)}.arch span{display:block;margin-top:7px;color:#999187;font-size:12px}.privacy{border-left:4px solid var(--green);background:linear-gradient(90deg,#182018,#131511)}footer{padding:28px 0 50px;border-top:1px solid #302a24;color:#7f786f;font-size:11px}
+    @media(max-width:900px){header{min-height:540px}.grid,.gallery{grid-template-columns:1fr}.architecture{grid-template-columns:1fr 1fr}}@media(max-width:560px){.wrap{width:min(100% - 22px,1180px)}section{padding:20px}.architecture{grid-template-columns:1fr}.hero{padding:68px 0 56px}.hero h1{font-size:44px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div class="eyebrow">Windows Game QA · Product & Engineering Demo</div>
+      <h1>游戏性能与日志追溯 Demo</h1>
+      <p>试玩者只需回忆并选择问题发生的大致时间段，工具便自动截取对应性能数据和游戏日志，为 QA 与研发保留可追溯的缺陷现场。</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase/releases/latest/download/game-diagnostic-demo-windows-x64.zip">下载 Windows 便携版</a>
+        <a class="button" href="#documents">阅读设计文档</a>
+        <a class="button" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase">查看完整源码</a>
+      </div>
+      <div class="note">Windows 10/11 x64 · 完整解压后运行 · 无需预装 Python · 未签名程序可能触发 SmartScreen 提示</div>
+    </div>
+  </header>
+
+  <nav><div class="wrap"><a href="#overview">项目概览</a><a href="#flow">演示闭环</a><a href="#documents">设计文档</a><a href="#screens">实机截图</a><a href="#reports">报告示例</a><a href="#engineering">工程实现</a></div></nav>
+
+  <main class="wrap">
+    <section id="overview">
+      <div class="section-head"><div class="num">01</div><div><h2>项目概览</h2><p>从需求定义、真实采集到可分发 Windows Demo 的完整实现。</p></div></div>
+      <div class="grid">
+        <article class="card"><span class="tag">问题</span><h3>缺陷现场容易丢失</h3><p>试玩者往往只能回忆 Bug 发生的大致时间，研发收到反馈后需要从完整日志和长时间性能记录中反复查找。</p></article>
+        <article class="card"><span class="tag">方案</span><h3>时间段驱动证据截取</h3><p>工具持续滚动采集最近 30 分钟；提交时只选择开始与结束时间，自动生成对应性能、日志和来源状态。</p></article>
+        <article class="card"><span class="tag">结果</span><h3>QA 与研发直接查看</h3><p>离线报告同时提供反馈信息、性能曲线、日志事件、原始证据与数据完整性说明，减少往返补问。</p></article>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="section-head"><div class="num">02</div><div><h2>端到端演示闭环</h2><p>不建设完整企业缺陷平台，集中验证最有价值的现场证据链路。</p></div></div>
+      <div class="flow">
+        <article class="step"><small>STEP 01</small><b>启动工具</b><p>完成环境与权限检查。</p></article>
+        <article class="step"><small>STEP 02</small><b>识别游戏</b><p>绑定目标渲染进程。</p></article>
+        <article class="step"><small>STEP 03</small><b>持续采集</b><p>记录性能与可读日志。</p></article>
+        <article class="step"><small>STEP 04</small><b>快捷键反馈</b><p>填写问题发生时间段。</p></article>
+        <article class="step"><small>STEP 05</small><b>生成证据</b><p>截取区间及上下文。</p></article>
+        <article class="step"><small>STEP 06</small><b>诊断查看</b><p>QA 与研发离线浏览。</p></article>
+      </div>
+    </section>
+
+    <section id="documents">
+      <div class="section-head"><div class="num">03</div><div><h2>产品与技术文档</h2><p>两份 HTML 均可在线阅读，也可在本地离线打开。</p></div></div>
+      <div class="grid">
+        <a class="card card-link" href="performance-log-tracing-design.html"><span class="tag">需求 + 技术</span><h3>性能与日志追溯 Demo 设计稿</h3><p>需求价值、演示范围、交互流程、采集口径、数据模型、测试标准和实机问题修复记录。</p></a>
+        <a class="card card-link" href="defect-feedback-system-prd.html"><span class="tag">产品设计</span><h3>缺陷反馈系统 PRD</h3><p>从反馈入口、环境自动采集、原始提交留档到 Jira 同步的完整产品需求与验收口径。</p></a>
+        <a class="card card-link" href="https://github.com/dingwer497-hub/game-performance-diagnostic-showcase"><span class="tag">Implementation</span><h3>源码、测试与构建脚本</h3><p>查看进程发现、性能采集、日志跟踪、区间导出、报告生成、GUI 和便携发行实现。</p></a>
+      </div>
+    </section>
+
+    <section id="screens">
+      <div class="section-head"><div class="num">04</div><div><h2>实机运行截图</h2><p>从等待游戏启动、游戏内采集到缺陷反馈时间选择。</p></div></div>
+      <div class="gallery">
+        <figure class="shot"><img src="assets/images/demo-step-1.png" alt="启动工具并等待目标游戏"><figcaption>启动工具与环境状态</figcaption></figure>
+        <figure class="shot"><img src="assets/images/demo-step-2-3.png" alt="游戏内采集状态浮窗"><figcaption>游戏内持续采集</figcaption></figure>
+        <figure class="shot"><img src="assets/images/demo-step-4-5.png" alt="缺陷反馈时间选择窗口"><figcaption>选择问题时间并提交反馈</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="reports">
+      <div class="section-head"><div class="num">05</div><div><h2>QA / 研发报告示例</h2><p>三份示例均来自本机真实采集，完整保留性能时间序列、异常帧与游戏日志事件。</p></div></div>
+      <div class="grid">
+        <a class="card card-link" href="attachments/demo-step-6-report/feedback.html"><span class="tag">标准流程</span><h3>01 标准诊断报告</h3><p>查看完整反馈、区间摘要、性能曲线、日志事件与原始证据入口。</p></a>
+        <a class="card card-link" href="attachments/demo-problem-3-before-report/feedback.html"><span class="tag">Bad Case</span><h3>02 异常帧污染</h3><p>展示后台切换造成极端帧时间和失真摘要时的旧版报告表现。</p></a>
+        <a class="card card-link" href="attachments/demo-problem-3-after-report/feedback.html"><span class="tag">修复结果</span><h3>03 前台状态过滤</h3><p>保留原始证据，同时从主摘要和曲线排除已确认的后台区间。</p></a>
+      </div>
+    </section>
+
+    <section id="engineering">
+      <div class="section-head"><div class="num">06</div><div><h2>工程实现</h2><p>优先保证数据真实性、失败隔离和低侵入性。</p></div></div>
+      <div class="architecture">
+        <article class="arch"><strong>采集层</strong><span>psutil · PresentMon · Windows GPU Engine · 日志增量跟踪</span></article>
+        <article class="arch"><strong>时间轴层</strong><span>UTC 毫秒对齐 · 秒级聚合 · 前台状态 · 30 分钟滚动窗口</span></article>
+        <article class="arch"><strong>证据层</strong><span>CSV · JSONL · 来源状态 · 区间摘要 · 真实日志事件</span></article>
+        <article class="arch"><strong>呈现与发行</strong><span>Tkinter 浮窗 · 离线 HTML · Chart.js · PyInstaller 便携包</span></article>
+      </div>
+    </section>
+
+    <section class="privacy">
+      <div class="section-head"><div class="num">✓</div><div><h2>公开展示数据边界</h2><p>保留诊断价值，同时避免暴露无关个人信息。</p></div></div>
+      <p>三份报告保留真实采集的性能数据、日志事件、进程、主机和会话信息；仅移除用户名及本机绝对路径。游戏文件、构建缓存和与展示无关的个人数据不会公开。Demo 不注入游戏进程，不读取或修改游戏内存，也不规避反作弊。</p>
+    </section>
+  </main>
+
+  <footer><div class="wrap">游戏性能与日志追溯 Demo · 产品设计、技术实现与 Windows 便携发行展示</div></footer>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Fully resolved development environment verified on Windows with Python 3.12.13.
+# Regenerate deliberately after changing requirements-dev.txt.
+colorama==0.4.6
+iniconfig==2.3.0
+packaging==26.3
+pluggy==1.6.0
+psutil==7.2.2
+Pygments==2.21.0
+pytest==9.1.1
+setuptools==84.0.0
